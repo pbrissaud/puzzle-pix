@@ -16,8 +16,18 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello world</h1>');
 });
 
+let clientCount = 0;
+
 io.on('connection', (socket) => {
-  console.log('a user connected');
+  clientCount++;
+  io.emit('clientCount', clientCount);
+  console.log('a user connected, client count:', clientCount);
+
+  socket.on("disconnect", () => {
+    clientCount--;
+    io.emit("clientCount", clientCount);
+    console.log('user disconnected, client count:', clientCount);
+  });
 });
 
 server.listen(port, () => {
