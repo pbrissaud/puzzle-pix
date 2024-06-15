@@ -2,6 +2,9 @@ import "@repo/ui/globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import React from "react";
+import {CSPostHogProvider} from "../components/providers/analytics";
+import {ThemeProvider} from "../components/providers/theme";
+import {cn} from "@ui/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +20,18 @@ export default function RootLayout({
 }): React.ReactElement {
   return (
     <html lang="en">
-    <body className={inter.className}>{children}</body>
+    <CSPostHogProvider>
+    <body className={cn("min-h-screen bg-background font-sans antialiased", inter.className)}>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
+      disableTransitionOnChange
+    >
+      {children}
+    </ThemeProvider>
+    </body>
+    </CSPostHogProvider>
     </html>
   );
 }
