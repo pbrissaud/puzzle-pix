@@ -8,6 +8,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -19,6 +21,9 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          name: Release ${{ needs.semver.outputs.version }}
-          tag: ${{ needs.semver.outputs.tag }}
-          generateReleaseNotes: true
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+    outputs:
+      tag: ${{ steps.tag_version.outputs.new_tag }}
+      version: ${{ steps.tag_version.outputs.new_version }}
