@@ -5,6 +5,8 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: true,
-    'no-redeclare': 'off',
   },
+  rules: {
+    "no-redeclare": "off",
+  }
 };
