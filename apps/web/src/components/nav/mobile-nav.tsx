@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-import Link, { LinkProps } from "next/link"
-import { useRouter } from "next/navigation"
+import Link, {LinkProps} from "next/link"
+import {useRouter} from "next/navigation"
 
 import {Sheet, SheetContent, SheetTrigger} from "@ui/components/ui/sheet";
 import {Button} from "@ui/components/ui/button";
@@ -85,6 +85,7 @@ export function MobileNav() {
 }
 
 interface MobileLinkProps extends LinkProps {
+    // eslint-disable-next-line no-unused-vars
     onOpenChange?: (open: boolean) => void
     children: React.ReactNode
     className?: string
