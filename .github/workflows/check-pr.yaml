@@ -1,7 +1,7 @@
 name: "Pull request compliance"
 on:
   pull_request:
-    types: [opened, synchronize, edited]
+    types: [opened, synchronize, reopened, edited]
     branches:
       - main
 
@@ -11,13 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: tisonkun/actions-dco@v1.1
-  conventionnal-commit:
-    name: PR title and description
+  validate-pr-title:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Extract pull request title
-        run: echo "${{ github.event.pull_request.title }}" > pull-request-title
-      - name: Check conventional commit
-        run: npx git-conventional-commits commit-msg-hook pull-request-title
+      - name: PR Conventional Commit Validation
+        uses: ytanikin/PRConventionalCommits@1.1.0
+        with:
+          task_types: '["feat","fix","docs","test","ci","refactor","perf","chore","revert"]'
