@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ui:add": "pnpm dlx shadcn-ui@latest add",
-    "lint": "eslint \"**/*.ts*\" --max-warnings 0"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

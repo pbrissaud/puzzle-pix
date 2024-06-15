@@ -1,0 +1,18 @@
+name: "Pull request compliance"
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
+    branches:
+      - main
+
+jobs:
+  conventionnal-commit:
+    name: PR title and description
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Extract pull request title
+        run: echo "${{ github.event.pull_request.title }}" > pull-request-title
+      - name: Check conventional commit
+        run: npx git-conventional-commits commit-msg-hook pull-request-title
