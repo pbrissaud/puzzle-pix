@@ -12,7 +12,10 @@ jobs:
     steps:
       - uses: tisonkun/actions-dco@v1.1
   validate-pr-title:
+    name: PR Title Validation
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     steps:
       - name: PR Conventional Commit Validation
         uses: ytanikin/PRConventionalCommits@1.1.0
