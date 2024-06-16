@@ -19,6 +19,9 @@ const coreConfig = {
     },
     reactStrictMode: true,
     transpilePackages: ["@repo/ui"],
+    images: {
+        domains: ["utfs.io"],
+    }
 };
 
 

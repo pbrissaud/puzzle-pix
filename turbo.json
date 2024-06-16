@@ -1,7 +1,15 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
-  "globalEnv": ["PORT", "NODE_ENV", "NEXT_PUBLIC_POSTHOG_KEY", "POSTHOG_HOST", "NEXT_RUNTIME", "CI"],
+  "globalEnv": [
+    "PORT",
+    "NODE_ENV",
+    "NEXT_PUBLIC_POSTHOG_KEY",
+    "POSTHOG_HOST",
+    "NEXT_RUNTIME",
+    "CI",
+    "MONGODB_URI"
+  ],
   "tasks": {
     "build": {
       "outputs": ["dist/**", ".next/**", "!.next/cache/**", "public/dist/**"],

@@ -1,55 +1,38 @@
-"use client";
-import {io, Socket} from "socket.io-client";
-import {useEffect, useState} from "react";
+import GameScreen from "../../../../components/game-screen";
+import clientPromise from "../../../../server/mongo";
+import {Game, GameDocument} from "../../../../types/game";
+import {Suspense} from "react";
+import {ObjectId} from "mongodb";
 
-const useSocket = (url: string): Socket | null => {
-  const [socket, setSocket] = useState<Socket | null>(null);
+const getGame = async (gameId: string) => {
+  const client = await clientPromise;
+  const db = client.db();
+  const query = {_id: new ObjectId(gameId)};
+  const document = await db.collection<GameDocument>("games").findOne(query);
+  if (!document) {
+    throw new Error("Game not found");
+  }
+  const game: Game = {
+    _id: document._id.toHexString(),
+    name: document.name,
+    public: document.public,
+    createdAt: new Date(document.createdAt),
+    img: document.img,
+    slots: document.slots,
+    players: document.players,
+    author: document.author,
+    nbPieces: document.nbPieces,
+  }
+  return game;
+}
 
-  useEffect(() => {
-    const newSocket = io(url);
-    setSocket(newSocket);
-
-    newSocket.on("connect", () => {
-      console.log("Connected to server");
-    });
-
-    return () => {
-      newSocket.disconnect();
-    };
-  }, [url]);
-
-  return socket;
-};
-
-const GamePage = () => {
-  const socket = useSocket("http://localhost:3001");
-  const [socketId, setSocketId] = useState<string | null>(null);
-  const [clientCount, setClientCount] = useState<number>(0);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on("connect", () => {
-        setSocketId(socket.id!);
-      });
-
-      socket.on("clientCount", (count: number) => {
-        setClientCount(count);
-      });
-
-      return () => {
-        socket.off("clientCount");
-      };
-    }
-  }, [socket]);
-
+const GamePage = async ({params}: { params: { gameId: string } }) => {
+  const game = await getGame(params.gameId);
   return (
-    <div>
-      <h1>Page</h1>
-      {socketId ? <div><p>I'm the socket number {socketId}</p></div> :
-        <p>Connecting...</p>}
-      <p>Connected clients: {clientCount}</p>
-    </div>
-  );
+      <Suspense fallback={"Loading ..."}>
+        <GameScreen game={game}/>
+      </Suspense>
+  )
 };
 
 export default GamePage;
