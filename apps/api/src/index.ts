@@ -1,22 +1,16 @@
 import express from 'express';
 import {createServer} from 'node:http';
 import {Server} from 'socket.io';
-import {Db, MongoClient, ObjectId} from "mongodb";
+import {PlayerRole, PrismaClient} from "@repo/db";
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const port = process.env.PORT || 3001;
 
-const url = 'mongodb://localhost:27017';
-const dbName = 'puzzlepix';
-let db: Db;
-
-MongoClient.connect(url).then((client) => {
-  db = client.db(dbName);
-  console.log('Connected to database');
-}).catch((error) => {
-  console.error(error);
-})
-
 const app = express();
+const db = new PrismaClient();
+
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
@@ -27,57 +21,61 @@ const io = new Server(server, {
 
 // Function to generate a random name
 const generateRandomName = () => {
-  const names = ['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo', 'Foxtrot', 'Golf', 'Hotel'];
-  return names[Math.floor(Math.random() * names.length)];
+  return "Player_" + Math.floor(Math.random() * 1000);
 };
 
 io.on('connection', (socket) => {
-  socket.on("room-join", async (channel) => {
+  socket.on("room-join", async (channel, callback) => {
     console.log("Client joined room", channel);
     socket.join(channel);
 
+    const randomName = generateRandomName();
+
     // Add player to MongoDB
-    const player = {
-      name: generateRandomName(),
-      socketId: socket.id,
-      role: "player"
-    };
+    const player = await db.player.create({
+      data: {
+        name: randomName,
+        socketId: socket.id,
+        room: {
+          connect: {
+            id: channel
+          }
+        },
+        role: PlayerRole.PLAYER,
+      },
+      include: {
+        room: {
+          select: {
+            players: true
+          }
+        }
+      }
+    });
 
-    await db.collection('games').updateOne(
-        {_id: new ObjectId(channel)},
-        {$push: {players: player}}
-    );
+    io.to(channel).emit("room-nb-players", player.room.players.length);
 
-    const game = await db.collection('games').findOne({_id: new ObjectId(channel)});
-
-    if (!game) {
-      console.error("Game not found");
-      return;
-    }
-
-    const clientCountInRoom = game.players.length;
-
-    // Emit the event to all clients in the room
-    io.to(channel).emit("room-nb-players", clientCountInRoom);
+    callback(randomName)
   });
 
   socket.on("disconnecting", async () => {
     console.log("Client disconnecting");
     for (const channel of socket.rooms) {
       if (channel !== socket.id) {
-        await db.collection('games').updateOne(
-            {_id: new ObjectId(channel)},
-            {$pull: {players: {socketId: socket.id}}}
-        );
 
-        const game = await db.collection('games').findOne({_id: new ObjectId(channel)});
-        if (!game) {
-          console.error("Game not found");
-          return;
-        }
+        const removedPlayer = await db.player.delete({
+          where: {
+            socketId: socket.id
+          },
+          include: {
+            room: {
+              select: {
+                players: true
+              }
+            }
+          }
+        });
 
-        const clientCountInRoom = game.players.length;
-        io.to(channel).emit("room-nb-players", clientCountInRoom);
+        io.to(channel).emit("room-nb-players", removedPlayer.room.players.length);
       }
     }
   });

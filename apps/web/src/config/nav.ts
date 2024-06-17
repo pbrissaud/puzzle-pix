@@ -1,18 +1,12 @@
-import {Icons} from "../components/icons";
-
-export interface NavItem {
+interface NavItem {
     title: string
-    href?: string
-    disabled?: boolean
-    external?: boolean
-    icon?: keyof typeof Icons
-    label?: string
+  href: string
 }
 
 export const mainNav: NavItem[] = [
     {
-        title: "Games",
-        href: "/games",
+      title: "Rooms",
+      href: "/rooms",
     },
     {
         title: "Support",

@@ -11,7 +11,7 @@ import {
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@ui/components/ui/table";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {Game} from "../../../types/game";
+import {Room} from "@repo/db";
 
 
 interface DataTableProps<TData, TValue> {
@@ -19,7 +19,7 @@ interface DataTableProps<TData, TValue> {
     data: TData[]
 }
 
-export function GamesDataTable<TData, TValue>({
+export function RoomsDataTable<TData, TValue>({
                                                   columns,
                                                   data,
                                               }: DataTableProps<TData, TValue>) {
@@ -65,7 +65,7 @@ export function GamesDataTable<TData, TValue>({
                             <TableRow
                                 key={row.id}
                                 className="cursor-pointer"
-                                onClick={() => router.push(`/game/${(row.original as Game)['_id']}`)}
+                                onClick={() => router.push(`/room/${(row.original as Room)['id']}`)}
                                 data-state={row.getIsSelected() && "selected"}
                             >
                                 {row.getVisibleCells().map((cell) => (

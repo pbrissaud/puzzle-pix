@@ -14,11 +14,11 @@ export default function HomePage() {
               PuzzlePix is the ultimate online multiplayer puzzle game that lets you turn your favorite photos into exciting puzzles. Play with friends and family, share the fun, and enjoy hours of puzzling entertainment!
           </PageHeaderDescription>
           <PageActions>
-              <Link passHref href="/game/create">
-                  <Button>Create a game</Button>
+            <Link passHref href="/room/create">
+              <Button>Create a room</Button>
               </Link>
-              <Link passHref href="/games">
-                <Button variant="outline">Join public games</Button>
+            <Link passHref href="/rooms">
+              <Button variant="outline">Join public room</Button>
               </Link>
           </PageActions>
       </PageHeader>

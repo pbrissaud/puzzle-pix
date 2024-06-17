@@ -1,17 +1,21 @@
 import {PageHeader, PageHeaderHeading} from "../../../../components/page-header";
 
 import React from "react";
-import CreateGameForm from "../../../../components/forms/create-game-form";
+import CreateRoomForm from "../../../../components/forms/create-room-form";
 
-const CreateGamePage = () => {
+const CreateRoomPage = () => {
   return (
+    <>
       <PageHeader>
         <PageHeaderHeading className="hidden md:block">
-          Create a game
+          Create a room
         </PageHeaderHeading>
-          <CreateGameForm/>
       </PageHeader>
+      <div className="container">
+        <CreateRoomForm/>
+      </div>
+    </>
   );
 }
 
-export default CreateGamePage
+export default CreateRoomPage

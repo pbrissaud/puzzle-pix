@@ -1,10 +1,8 @@
 "use client";
 
 import {useForm} from "react-hook-form";
-import {z} from "zod"
-import {createGameFormSchema, CreateGameFormSchema} from "../../types/game-creation";
 import {zodResolver} from "@hookform/resolvers/zod"
-import {createGame} from "../../app/actions";
+import {createRoom} from "../../app/actions";
 import {Button} from "@ui/components/ui/button"
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@ui/components/ui/form"
 import {Input} from "@ui/components/ui/input";
@@ -13,17 +11,17 @@ import {FileUploader} from "../file-uploader";
 import {useUploadFile} from "../../hooks/use-upload-file";
 import {useEffect, useState} from "react";
 import {UploadedFilesCard} from "../uploaded-files-card";
+import {RoomCreationForm, roomCreationFormSchema} from "../../types/room-creation";
 
-
-const CreateGameForm = () => {
+const CreateRoomForm = () => {
     const [loading, setLoading] = useState(false)
-    const form = useForm<z.infer<typeof createGameFormSchema>>({
-        resolver: zodResolver(createGameFormSchema),
+  const form = useForm<RoomCreationForm>({
+    resolver: zodResolver(roomCreationFormSchema),
         defaultValues: {
             name: "",
-            isPublic: false,
-            image: [],
-            slots: 1,
+          public: false,
+          images: [],
+          maxPlayers: 1,
             nbPieces: 10,
         }
     })
@@ -44,14 +42,12 @@ const CreateGameForm = () => {
         }
     }, [uploadedFiles]);
 
-    async function onSubmit(input: CreateGameFormSchema) {
+  async function onSubmit(data: RoomCreationForm) {
         setLoading(true)
-        await createGame({
-            name: input.name,
-            isPublic: input.isPublic,
-            img: uploadedFiles[0].url,
-            slots: input.slots,
-            nbPieces: input.nbPieces,
+    const dataWithoutImages = {...data, ['images']: undefined};
+    await createRoom({
+      ...dataWithoutImages,
+      imgUrl: uploadedFiles[0].url
         })
         setLoading(false)
     }
@@ -77,7 +73,7 @@ const CreateGameForm = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="isPublic"
+                    name="public"
                     render={({field}) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                             <FormControl>
@@ -99,13 +95,13 @@ const CreateGameForm = () => {
                 />
                 <FormField
                     control={form.control}
-                    name="image"
+                    name="images"
                     render={({field}) => (
                         <div className="space-y-6">
                             {uploadedFiles.length === 0 ? (
 
                                 <FormItem className="w-full">
-                                    <FormLabel>Images</FormLabel>
+                                  <FormLabel>Image</FormLabel>
                                     <FormControl>
                                         <FileUploader
                                             value={field.value}
@@ -128,7 +124,7 @@ const CreateGameForm = () => {
 
                 <FormField
                     control={form.control}
-                    name="slots"
+                    name="maxPlayers"
                     render={({field}) => (
                         <FormItem>
                             <FormLabel>Max Players</FormLabel>
@@ -171,4 +167,4 @@ const CreateGameForm = () => {
     )
 }
 
-export default CreateGameForm
+export default CreateRoomForm
