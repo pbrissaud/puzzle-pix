@@ -1,7 +1,6 @@
 "use client"
 
 import {ColumnDef} from "@tanstack/react-table"
-import Link from "next/link";
 import {Player, Room} from "@repo/db";
 import {format} from 'date-fns';
 import {Button} from "@ui/components/ui/button";
@@ -18,14 +17,6 @@ export const columns: ColumnDef<Room & { players: Player[] }>[] = [
         cell: ({row}: { row: any }) => {
           const data = row.original as Room & { players: Player[] };
           return <span>{data.players.length}/{data.maxPlayers}</span>;
-        }
-    },
-    {
-        header: "Image",
-        cell: ({row}: { row: any }) => {
-          const data = row.original as Room;
-          return <Link href={data.imgUrl} passHref type="_blank"><img src={data.imgUrl} alt={data.name}
-                                                                     className="aspect-video h-20"/></Link>;
         }
     },
     {

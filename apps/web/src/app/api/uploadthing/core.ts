@@ -6,8 +6,7 @@ const f = createUploadthing();
 
 const auth = async () => {
     const {getUser} = getKindeServerSession()
-    const user = await getUser()
-    return user;
+  return getUser()
 };
 
 export const ourFileRouter: FileRouter = {
@@ -19,7 +18,7 @@ export const ourFileRouter: FileRouter = {
 
             return {userId: user.id};
         })
-        .onUploadComplete(async ({metadata, file}) => {
+      .onUploadComplete(async ({file}) => {
             return {url: file.url};
         }),
 };

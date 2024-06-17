@@ -3,8 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import {Cross2Icon, UploadIcon} from "@radix-ui/react-icons"
-import Dropzone, {type DropzoneProps, type FileRejection,} from "react-dropzone"
-import {toast} from "sonner"
+import Dropzone, {type DropzoneProps,} from "react-dropzone"
 import {useControllableState} from "../hooks/use-controllable-state";
 import {formatBytes} from "../utils";
 import {ScrollArea} from "@ui/components/ui/scroll-area";
@@ -36,6 +35,7 @@ interface FileUploaderProps extends React.HTMLAttributes<HTMLDivElement> {
      * @default undefined
      * @example onUpload={(files) => uploadFiles(files)}
      */
+    // eslint-disable-next-line no-unused-vars
     onUpload?: (files: File[]) => Promise<void>
 
     /**
@@ -111,14 +111,12 @@ export function FileUploader(props: FileUploaderProps) {
     })
 
     const onDrop = React.useCallback(
-        (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+      (acceptedFiles: File[]) => {
             if (!multiple && maxFiles === 1 && acceptedFiles.length > 1) {
-                toast.error("Cannot upload more than 1 file at a time")
                 return
             }
 
             if ((files?.length ?? 0) + acceptedFiles.length > maxFiles) {
-                toast.error(`Cannot upload more than ${maxFiles} files`)
                 return
             }
 
@@ -132,28 +130,13 @@ export function FileUploader(props: FileUploaderProps) {
 
             setFiles(updatedFiles)
 
-            if (rejectedFiles.length > 0) {
-                rejectedFiles.forEach(({file}) => {
-                    toast.error(`File ${file.name} was rejected`)
-                })
-            }
-
             if (
                 onUpload &&
                 updatedFiles.length > 0 &&
                 updatedFiles.length <= maxFiles
             ) {
-                const target =
-                    updatedFiles.length > 0 ? `${updatedFiles.length} files` : `file`
 
-                toast.promise(onUpload(updatedFiles), {
-                    loading: `Uploading ${target}...`,
-                    success: () => {
-                        setFiles([])
-                        return `${target} uploaded`
-                    },
-                    error: `Failed to upload ${target}`,
-                })
+                onUpload(updatedFiles)
             }
         },
 
@@ -177,7 +160,6 @@ export function FileUploader(props: FileUploaderProps) {
                 }
             })
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const isDisabled = disabled || (files?.length ?? 0) >= maxFiles
