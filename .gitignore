@@ -28,6 +28,7 @@ yarn-error.log*
 
 # local env files
 apps/web/.env.local
+apps/api/.env.local
 .env.development.local
 .env.test.local
 .env.production.local
