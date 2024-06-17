@@ -24,6 +24,14 @@ export async function GET() {
     });
     analytics.capture({event: "user_signed_up", distinctId: user.id, properties: {}});
   } else {
+    await db.user.update({
+      where: {
+        authId: user.id
+      },
+      data: {
+        lastLoginDate: new Date()
+      }
+    });
     analytics.capture({event: "user_logged_in", distinctId: user.id});
   }
 
