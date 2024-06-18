@@ -1,9 +1,16 @@
 import express from 'express';
-import { createServer } from 'node:http';
+import {createServer} from 'node:http';
+import {Server} from 'socket.io';
+import {PlayerRole, PrismaClient} from "@repo/db";
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const port = process.env.PORT || 3001;
-import { Server } from 'socket.io';
 
 const app = express();
+const db = new PrismaClient();
+
 const server = createServer(app);
 const io = new Server(server, {
   cors: {
@@ -12,21 +19,69 @@ const io = new Server(server, {
   }
 });
 
-app.get('/', (req, res) => {
-  res.send('<h1>Hello world</h1>');
-});
-
-let clientCount = 0;
+// Function to generate a random name
+const generateRandomName = () => {
+  return "Player_" + Math.floor(Math.random() * 1000);
+};
 
 io.on('connection', (socket) => {
-  clientCount++;
-  io.emit('clientCount', clientCount);
-  console.log('a user connected, client count:', clientCount);
+  socket.on("room-join", async (channel, callback) => {
+    console.log("Client joined room", channel);
+    socket.join(channel);
+
+    const randomName = generateRandomName();
+
+    // Add player to MongoDB
+    const player = await db.player.create({
+      data: {
+        name: randomName,
+        socketId: socket.id,
+        room: {
+          connect: {
+            id: channel
+          }
+        },
+        role: PlayerRole.PLAYER,
+      },
+      include: {
+        room: {
+          select: {
+            players: true
+          }
+        }
+      }
+    });
+
+    io.to(channel).emit("room-nb-players", player.room.players.length);
+
+    callback(randomName)
+  });
+
+  socket.on("disconnecting", async () => {
+    console.log("Client disconnecting");
+    for (const channel of socket.rooms) {
+      if (channel !== socket.id) {
+
+        const removedPlayer = await db.player.delete({
+          where: {
+            socketId: socket.id
+          },
+          include: {
+            room: {
+              select: {
+                players: true
+              }
+            }
+          }
+        });
+
+        io.to(channel).emit("room-nb-players", removedPlayer.room.players.length);
+      }
+    }
+  });
 
   socket.on("disconnect", () => {
-    clientCount--;
-    io.emit("clientCount", clientCount);
-    console.log('user disconnected, client count:', clientCount);
+    console.log("Client disconnected");
   });
 });
 

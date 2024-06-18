@@ -21,9 +21,22 @@ services:
       - 3001:3001
     networks:
       - app_network
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: puzzlepix
+    networks:
+      - app_network
+    volumes:
+      - mongodb_data:/data/db
 
 # Define a network, which allows containers to communicate
 # with each other, by using their container name as a hostname
 networks:
   app_network:
     external: true
+
+volumes:
+  mongodb_data:

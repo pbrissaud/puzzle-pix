@@ -8,7 +8,10 @@
     "dev": "turbo run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
-    "test": "turbo run test"
+    "test": "turbo run test",
+    "ui:add": "turbo run ui:add --filter=@repo/ui --",
+    "db:generate": "turbo run db:generate --filter=@repo/db",
+    "db:push": "turbo run db:push --filter=@repo/db"
   },
   "dependencies": {},
   "devDependencies": {

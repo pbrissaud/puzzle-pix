@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "group:turboMonorepo"
   ],
   "packageRules": [
     {
@@ -9,5 +10,6 @@
       "automerge": true
     }
   ],
+  "minimumReleaseAge": 7,
   "assignees": ["pbrissaud"]
 }

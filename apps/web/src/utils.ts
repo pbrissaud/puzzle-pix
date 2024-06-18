@@ -1,9 +1,3 @@
-export const upperFirstLetter = (phrase: string) => {
-    return phrase.split(" ").map((word) => {
-        return word.charAt(0).toUpperCase() + word.slice(1);
-    }).join(" ");
-};
-
 export const extractCapitals = (phrase: string, length = 2) => {
     return phrase
         .split(" ")
@@ -12,14 +6,20 @@ export const extractCapitals = (phrase: string, length = 2) => {
         .join("");
 };
 
-export const formatName = (name: string) => {
-    // replace space with dash
-    // replace non-alphanumeric characters with ASCII equivalent
-    return name
-        .trim()
-        .replace(/ /g, "-")
-        .replace(/[^a-zA-Z0-9-]/g, (char) => {
-            return char.charCodeAt(0).toString();
-        })
-        .toLowerCase();
-};
+export function formatBytes(
+    bytes: number,
+    opts: {
+        decimals?: number
+        sizeType?: "accurate" | "normal"
+    } = {}
+) {
+    const {decimals = 0, sizeType = "normal"} = opts
+
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
+    const accurateSizes = ["Bytes", "KiB", "MiB", "GiB", "TiB"]
+    if (bytes === 0) return "0 Byte"
+    const i = Math.floor(Math.log(bytes) / Math.log(1024))
+    return `${(bytes / Math.pow(1024, i)).toFixed(decimals)} ${
+        sizeType === "accurate" ? accurateSizes[i] ?? "Bytest" : sizes[i] ?? "Bytes"
+    }`
+}

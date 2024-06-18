@@ -19,6 +19,11 @@ const coreConfig = {
     },
     reactStrictMode: true,
     transpilePackages: ["@repo/ui"],
+    images: {
+        remotePatterns: [
+            {hostname: "utfs.io"}
+        ],
+    }
 };
 
 
