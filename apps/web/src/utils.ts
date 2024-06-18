@@ -23,7 +23,3 @@ export function formatBytes(
         sizeType === "accurate" ? accurateSizes[i] ?? "Bytest" : sizes[i] ?? "Bytes"
     }`
 }
-
-export function absoluteUrl(path: string) {
-    return `${process.env.NEXT_PUBLIC_APP_URL}${path}`
-}
