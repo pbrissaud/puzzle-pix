@@ -1,7 +1,7 @@
 name: "Pull request compliance"
 on:
   pull_request:
-    types: [opened, synchronize, reopened, edited]
+    types: [ opened, reopened, edited ]
     branches:
       - main
 
