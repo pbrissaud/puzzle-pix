@@ -19,11 +19,15 @@
       "env": ["NEXT_PUBLIC_API_HOST"]
     },
     "test": {
-      "outputs": ["coverage/**"],
-      "dependsOn": []
+      "outputs": [
+        "coverage/**"
+      ]
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": [
+        "^build",
+        "^db:generate"
+      ]
     },
     "dev": {
       "cache": false,
