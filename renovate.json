@@ -10,6 +10,6 @@
       "automerge": true
     }
   ],
-  "minimumReleaseAge": 7,
+  "minimumReleaseAge": "7",
   "assignees": ["pbrissaud"]
 }
