@@ -3,7 +3,7 @@ name: "Releasing process"
 on:
   push:
     branches:
-      - main
+      - develop
 
 jobs:
   release-please:
