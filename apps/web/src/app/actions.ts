@@ -5,7 +5,7 @@ import {redirect} from "next/navigation";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import db from "../server/mongo";
 import {RoomCreationAction, roomCreationActionSchema} from "../types/room-creation";
-
+import {analytics} from "../server/analytics";
 
 export const createRoom = async (data: RoomCreationAction) => {
     const {getUser} = getKindeServerSession()
@@ -21,6 +21,7 @@ export const createRoom = async (data: RoomCreationAction) => {
     }
     });
 
+  analytics.capture({event: "room_created", distinctId: user.id, properties: {public: data.public, roomId: res.id}})
   revalidatePath("/rooms")
   redirect(`/room/${res.id}`)
 }

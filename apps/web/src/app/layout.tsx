@@ -7,6 +7,8 @@ import {ThemeProvider} from "../components/providers/theme";
 import {cn} from "@ui/lib/utils";
 import {siteConfig} from "../config/site";
 import {SiteHeader} from "../components/nav/site-header";
+import {Toaster} from "@ui/components/ui/toaster";
+import {TRPCReactProvider} from "../trpc/react";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -88,9 +90,10 @@ export default function RootLayout({children}: RootLayoutProps) {
                 <div vaul-drawer-wrapper="">
                     <div className="relative flex min-h-screen flex-col bg-background">
                         <SiteHeader/>
-                        {children}
+                        <TRPCReactProvider>{children}</TRPCReactProvider>
                     </div>
                 </div>
+                <Toaster/>
             </ThemeProvider>
             </body>
         </CSPostHogProvider>

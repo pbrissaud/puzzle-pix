@@ -4,23 +4,11 @@ import React, {Suspense} from "react";
 import Link from "next/link";
 import {RoomsDataTable} from "./data-table";
 import {columns} from "./columns";
-import db from "../../../server/mongo";
-
-
-const getPublicRooms = async () => {
-  return db.room.findMany({
-    where: {
-      public: true
-    },
-    include: {
-      players: true
-    }
-  });
-}
+import {api} from "../../../trpc/server";
 
 
 const RoomListPage = async () => {
-  const games = await getPublicRooms();
+  const games = await api.room.listPublic();
     return (
         <>
         <PageHeader>
