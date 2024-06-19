@@ -21,19 +21,19 @@ importers:
   apps/api:
     dependencies:
       '@faker-js/faker':
-        specifier: ^8.4.1
+        specifier: 8.4.1
         version: 8.4.1
       dotenv:
-        specifier: ^16.4.5
+        specifier: 16.4.5
         version: 16.4.5
       express:
-        specifier: ^4.18.3
+        specifier: 4.19.2
         version: 4.19.2
       socket.io:
-        specifier: ^4.7.5
+        specifier: 4.7.5
         version: 4.7.5
       winston:
-        specifier: ^3.13.0
+        specifier: 3.13.0
         version: 3.13.0
     devDependencies:
       '@repo/db':
@@ -46,40 +46,40 @@ importers:
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/express':
-        specifier: ^4.17.21
+        specifier: 4.17.21
         version: 4.17.21
       '@types/jest':
-        specifier: ^29.5.12
+        specifier: 29.5.12
         version: 29.5.12
       '@types/node':
-        specifier: ^20.14.2
+        specifier: 20.14.6
         version: 20.14.6
       esbuild:
-        specifier: ^0.21.0
+        specifier: 0.21.5
         version: 0.21.5
       esbuild-register:
-        specifier: ^3.5.0
+        specifier: 3.5.0
         version: 3.5.0(esbuild@0.21.5)
       eslint:
-        specifier: ^8.57.0
+        specifier: 8.57.0
         version: 8.57.0
       jest:
-        specifier: ^29.7.0
+        specifier: 29.7.0
         version: 29.7.0(@types/node@20.14.6)
       nodemon:
-        specifier: ^3.1.0
+        specifier: 3.1.3
         version: 3.1.3
       typescript:
-        specifier: ^5.3.3
+        specifier: 5.4.5
         version: 5.4.5
 
   apps/web:
     dependencies:
       '@hookform/resolvers':
-        specifier: ^3.6.0
+        specifier: 3.6.0
         version: 3.6.0(react-hook-form@7.52.0(react@18.3.1))
       '@kinde-oss/kinde-auth-nextjs':
-        specifier: ^2.3.1
+        specifier: 2.3.1
         version: 2.3.1(@babel/core@7.24.7)(next@14.2.4(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-icons':
         specifier: ^1.3.0
@@ -88,16 +88,16 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@sentry/nextjs':
-        specifier: ^8
+        specifier: 8.10.0
         version: 8.10.0(@opentelemetry/api@1.9.0)(@opentelemetry/core@1.25.0(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.52.0(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.25.0(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.25.0)(next@14.2.4(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(webpack@5.92.1)
       '@tanstack/react-query':
-        specifier: ^5.45.1
+        specifier: 5.45.1
         version: 5.45.1(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.45.1
+        specifier: 5.45.1
         version: 5.45.1(@tanstack/react-query@5.45.1(react@18.3.1))(react@18.3.1)
       '@tanstack/react-table':
-        specifier: ^8.17.3
+        specifier: 8.17.3
         version: 8.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@trpc/client':
         specifier: 11.0.0-rc.413
@@ -112,67 +112,67 @@ importers:
         specifier: 11.0.0-rc.413
         version: 11.0.0-rc.413
       '@uploadthing/react':
-        specifier: ^6.6.0
+        specifier: 6.6.0
         version: 6.6.0(next@14.2.4(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)(uploadthing@6.12.0(express@4.19.2)(next@14.2.4(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.4))
       '@uploadthing/shared':
-        specifier: ^6.7.5
+        specifier: 6.7.5
         version: 6.7.5
       date-fns:
-        specifier: ^3.6.0
+        specifier: 3.6.0
         version: 3.6.0
       lucide-react:
-        specifier: ^0.395.0
+        specifier: 0.395.0
         version: 0.395.0(react@18.3.1)
       next:
-        specifier: ^14.1.1
+        specifier: 14.2.4
         version: 14.2.4(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-themes:
-        specifier: ^0.3.0
+        specifier: 0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       posthog-js:
-        specifier: ^1.139.2
+        specifier: 1.139.3
         version: 1.139.3
       posthog-node:
-        specifier: ^4.0.1
+        specifier: 4.0.1
         version: 4.0.1
       react:
-        specifier: ^18.2.0
+        specifier: 18.3.1
         version: 18.3.1
       react-dom:
-        specifier: ^18.2.0
+        specifier: 18.3.1
         version: 18.3.1(react@18.3.1)
       react-draggable:
-        specifier: ^4.4.6
+        specifier: 4.4.6
         version: 4.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-dropzone:
-        specifier: ^14.2.3
+        specifier: 14.2.3
         version: 14.2.3(react@18.3.1)
       react-hook-form:
-        specifier: ^7.51.5
+        specifier: 7.52.0
         version: 7.52.0(react@18.3.1)
       react-loading-skeleton:
-        specifier: ^3.4.0
+        specifier: 3.4.0
         version: 3.4.0(react@18.3.1)
       react-wrap-balancer:
-        specifier: ^1.1.1
+        specifier: 1.1.1
         version: 1.1.1(react@18.3.1)
       react-zoom-pan-pinch:
-        specifier: ^3.4.4
+        specifier: 3.4.4
         version: 3.4.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       server-only:
-        specifier: ^0.0.1
+        specifier: 0.0.1
         version: 0.0.1
       socket.io-client:
-        specifier: ^4.7.5
+        specifier: 4.7.5
         version: 4.7.5
       superjson:
-        specifier: ^2.2.1
+        specifier: 2.2.1
         version: 2.2.1
       uploadthing:
-        specifier: ^6.12.0
+        specifier: 6.12.0
         version: 6.12.0(express@4.19.2)(next@14.2.4(@babel/core@7.24.7)(@opentelemetry/api@1.9.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(tailwindcss@3.4.4)
       zod:
-        specifier: ^3.23.8
+        specifier: 3.23.8
         version: 3.23.8
     devDependencies:
       '@next/eslint-plugin-next':
@@ -251,70 +251,70 @@ importers:
   packages/ui:
     dependencies:
       '@hookform/resolvers':
-        specifier: ^3.6.0
+        specifier: 3.6.0
         version: 3.6.0(react-hook-form@7.52.0(react@18.3.1))
       '@radix-ui/react-avatar':
-        specifier: ^1.0.4
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-checkbox':
-        specifier: ^1.0.4
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog':
-        specifier: ^1.0.5
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dropdown-menu':
-        specifier: ^2.0.6
+        specifier: 2.1.0
         version: 2.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-label':
-        specifier: ^2.0.2
+        specifier: 2.1.0
         version: 2.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-progress':
-        specifier: ^1.0.3
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-scroll-area':
-        specifier: ^1.0.5
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-separator':
-        specifier: ^1.0.3
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
-        specifier: ^1.0.2
+        specifier: 1.1.0
         version: 1.1.0(@types/react@18.3.3)(react@18.3.1)
       '@radix-ui/react-toast':
-        specifier: ^1.1.5
+        specifier: 1.2.0
         version: 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-toggle':
-        specifier: ^1.0.3
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-tooltip':
-        specifier: ^1.0.7
+        specifier: 1.1.0
         version: 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       class-variance-authority:
-        specifier: ^0.7.0
+        specifier: 0.7.0
         version: 0.7.0
       clsx:
-        specifier: ^2.1.1
+        specifier: 2.1.1
         version: 2.1.1
       lucide-react:
-        specifier: ^0.395.0
+        specifier: 0.395.0
         version: 0.395.0(react@18.3.1)
       next-themes:
-        specifier: ^0.3.0
+        specifier: 0.3.0
         version: 0.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-hook-form:
-        specifier: ^7.51.5
+        specifier: 7.52.0
         version: 7.52.0(react@18.3.1)
       sonner:
-        specifier: ^1.5.0
+        specifier: 1.5.0
         version: 1.5.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge:
-        specifier: ^2.3.0
+        specifier: 2.3.0
         version: 2.3.0
       tailwindcss-animate:
-        specifier: ^1.0.7
+        specifier: 1.0.7
         version: 1.0.7(tailwindcss@3.4.4)
       zod:
-        specifier: ^3.23.8
+        specifier: 3.23.8
         version: 3.23.8
     devDependencies:
       '@repo/eslint-config':
