@@ -1,6 +1,6 @@
 {
   "name": "puzzle-pix",
-  "version": "0.0.0",
+  "version": "0.3.15",
   "private": true,
   "scripts": {
     "build": "turbo run build",
