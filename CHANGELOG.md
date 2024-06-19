@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.3.16](https://github.com/pbrissaud/puzzle-pix/compare/v0.3.15...v0.3.16) (2024-06-19)
+
+
+### Bug Fixes
+
+* **ci:** Branches for Github action ([bea0560](https://github.com/pbrissaud/puzzle-pix/commit/bea0560aacea08350034aa238442db21891b1567))
+* **ci:** Change base branch for PR checks ([522af22](https://github.com/pbrissaud/puzzle-pix/commit/522af22eb8ee02528a2c80d4c231f8f1a1381866))
+
 ## [0.3.15](https://github.com/pbrissaud/puzzle-pix/compare/v0.3.14...v0.3.15) (2024-06-19)
 
 
