@@ -6,6 +6,9 @@
   "schedule": [
     "every weekend"
   ],
+  "baseBranches": [
+    "develop"
+  ],
   "dependencyDashboard": true,
   "rangeStrategy": "pin",
   "internalChecksFilter": "strict",
