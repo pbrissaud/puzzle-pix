@@ -8,6 +8,7 @@ on:
 
 jobs:
   lint:
+    name: "Lint code"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,6 +44,7 @@ jobs:
       - name: Lint
         run: pnpm lint
   test:
+    name: "Run tests"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
