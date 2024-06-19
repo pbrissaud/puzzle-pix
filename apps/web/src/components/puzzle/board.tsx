@@ -6,7 +6,7 @@ import {Button} from '@repo/ui/components/ui/button';
 const PuzzleBoard = () => {
   return (
     <TransformWrapper>
-      {({zoomIn, zoomOut, resetTransform, ...rest}) => (
+      {({zoomIn, zoomOut, resetTransform}) => (
         <div className="w-full h-full">
           <div className="w-full flex mb-4 justify-end">
             <Button variant="ghost" onClick={() => zoomIn()}>Zoom In</Button>
