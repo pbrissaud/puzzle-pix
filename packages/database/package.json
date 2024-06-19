@@ -6,10 +6,10 @@
     "db:push": "prisma db push --skip-generate"
   },
   "devDependencies": {
-    "prisma": "^5.15.0"
+    "prisma": "5.15.1"
   },
   "dependencies": {
-    "@prisma/client": "^5.15.0"
+    "@prisma/client": "5.15.1"
   },
   "exports": {
     ".": "./src/index.ts"

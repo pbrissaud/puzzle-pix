@@ -1,15 +1,42 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "group:turboMonorepo"
+    "config:recommended"
   ],
+  "schedule": [
+    "every weekend"
+  ],
+  "baseBranches": [
+    "develop"
+  ],
+  "dependencyDashboard": true,
+  "rangeStrategy": "pin",
+  "internalChecksFilter": "strict",
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "groupName": "Major updates",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "minimumReleaseAge": "14",
+      "automerge": false
+    },
+    {
+      "groupName": "Minor updates",
+      "matchUpdateTypes": [
+        "minor"
+      ],
+      "minimumReleaseAge": "7",
+      "automerge": true
+    },
+    {
+      "groupName": "Patch updates",
+      "matchUpdateTypes": [
+        "patch"
+      ],
+      "minimumReleaseAge": "3",
       "automerge": true
     }
   ],
-  "minimumReleaseAge": "7",
   "assignees": ["pbrissaud"]
 }
