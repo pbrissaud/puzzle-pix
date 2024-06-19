@@ -54,11 +54,11 @@ const RoomScreen = ({room}: { room: Room }) => {
 
 
     const handleCopyRoomLink = () => {
-        navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL}/room/${room.id}`);
-
-        toast({
-            title: "Share Link copied",
-            description: "The link to the room has been copied to your clipboard",
+        navigator.clipboard.writeText(`${process.env.NEXT_PUBLIC_APP_URL}/room/${room.id}`).then(() => {
+            toast({
+                title: "Share Link copied",
+                description: "The link to the room has been copied to your clipboard",
+            })
         })
     }
 
