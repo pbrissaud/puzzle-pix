@@ -3,7 +3,7 @@ on:
   pull_request:
     types: [ opened, synchronize, reopened, edited ]
     branches:
-      - develop
+      - main
 
 jobs:
   dco-check:

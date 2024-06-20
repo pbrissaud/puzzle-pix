@@ -7,7 +7,7 @@
     "every weekend"
   ],
   "baseBranches": [
-    "develop"
+    "main"
   ],
   "dependencyDashboard": true,
   "rangeStrategy": "pin",
