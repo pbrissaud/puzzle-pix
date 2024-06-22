@@ -5,16 +5,16 @@ import {Room} from "@repo/db";
 import {Button} from "@ui/components/ui/button";
 import {useRouter} from "next/navigation";
 import {useToast} from "../hooks/use-toast";
-import {LogOutIcon, Share2Icon} from "lucide-react";
+import {LogOutIcon} from "lucide-react";
 import useSocket from "../hooks/use-socket";
 import RoomStats from "./room/room-stats";
 import Leaderboard from "./room/leaderboard";
 import {api} from "../trpc/react";
 import {useQueryClient} from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
-import 'react-loading-skeleton/dist/skeleton.css'
 import PuzzleBoard from "./puzzle/board";
-
+import 'react-loading-skeleton/dist/skeleton.css'
+import ZoomableImage from "./room/zoomable-image";
 
 const RoomScreen = ({room}: { room: Room }) => {
     const socket = useSocket();
@@ -26,7 +26,6 @@ const RoomScreen = ({room}: { room: Room }) => {
         staleTime: 10 * 1000,
         refetchInterval: 10 * 1000,
     });
-
 
     useEffect(() => {
         if (socket) {
@@ -63,16 +62,16 @@ const RoomScreen = ({room}: { room: Room }) => {
     }
 
     return (
-      <div className="grid grid-cols-6">
-          <div className="h-[calc(100vh-60px)] flex flex-col justify-between border-r-2">
+      <div className="grid grid-cols-6 h-[calc(100vh-60px)]">
+          <div className="flex flex-col justify-between border-r-2">
               <div className="flex-col space-y-4">
-                  <div className="p-6 border-b-2 justify-center">
+                  <div className="p-4 border-b-2 justify-center">
                       <h1 className="text-xl font-medium text-center">{room.name}</h1>
                       <RoomStats playerCount={players?.length || 0} maxPlayers={room.maxPlayers}
                                  nbPieces={room.nbPieces} creationDate={room.creationDate}/>
-                      <div className="flex justify-center mt-4">
-                          <Button variant="outline" onClick={handleCopyRoomLink}><Share2Icon className="mr-2 h-4 w-4"/>Copy
-                              link to room</Button>
+                      <div className="flex flex-col justify-center space-y-2 mt-4">
+                          <ZoomableImage src={room.imgUrl} alt={room.name}/>
+                          <Button variant="link" onClick={handleCopyRoomLink}>Copy link to room</Button>
                       </div>
                   </div>
                   <div className="text-md px-3">
@@ -90,10 +89,8 @@ const RoomScreen = ({room}: { room: Room }) => {
               </div>
           </div>
 
-          <div className="col-span-5 p-2">
-              <div className="fixed w-full h-full">
-                  <PuzzleBoard/>
-              </div>
+          <div className="col-span-5 h-full p-0.5">
+              <PuzzleBoard roomId={room.id}/>
           </div>
       </div>
     );

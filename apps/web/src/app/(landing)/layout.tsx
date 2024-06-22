@@ -7,9 +7,9 @@ interface AppLayoutProps {
 
 export default function LandingLayout({ children }: AppLayoutProps) {
     return (
-        <>
-            <main className="flex-1">{children}</main>
+      <div className="flex flex-col h-[calc(100vh-60px)]">
+        <main className="flex-grow">{children}</main>
             <SiteFooter />
-        </>
+      </div>
     )
 }

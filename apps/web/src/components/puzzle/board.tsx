@@ -1,36 +1,35 @@
 import React from 'react';
-import {TransformComponent, TransformWrapper} from "react-zoom-pan-pinch";
+import {api} from "../../trpc/react";
 import Draggable from 'react-draggable';
-import {Button} from '@repo/ui/components/ui/button';
 
-const PuzzleBoard = () => {
+const PuzzleBoard = ({roomId}: { roomId: string }) => {
+  const {data: pieces} = api.room.piece.list.useQuery({roomId}, {
+    staleTime: 1000,
+    refetchInterval: 1000,
+  });
+
+  if (!pieces) {
+    return <div>Loading pieces</div>
+  }
+
   return (
-    <TransformWrapper>
-      {({zoomIn, zoomOut, resetTransform}) => (
-        <div className="w-full h-full">
-          <div className="w-full flex mb-4 justify-end">
-            <Button variant="ghost" onClick={() => zoomIn()}>Zoom In</Button>
-            <Button variant="ghost" onClick={() => zoomOut()} className="btn">Zoom Out</Button>
-            <Button variant="ghost" onClick={() => resetTransform()} className="btn">Reset</Button>
+    <div className={`relative h-full w-full bg-cover bg-center bg-no-repeat`}>
+      {pieces.map((piece) => (
+        <Draggable key={piece.id} bounds="parent">
+          <div
+            id={piece.order}
+            className="absolute border border-black"
+            style={{
+              left: `${piece.posX}px`,
+              top: `${piece.posY}px`,
+            }}
+          >
+            {/*eslint-disable-next-line @next/next/no-img-element*/}
+            <img src={`data:image/png;base64,${piece.imgBuffer}`} alt={`Puzzle Piece ${piece.id}`} draggable={false}/>
           </div>
-          <TransformComponent wrapperClass="w-full h-full">
-            <div className="relative w-full h-full bg-red-500 opacity-80">
-              <PuzzlePiece/>
-              <PuzzlePiece/>
-              {/* Ajoute autant de pièces que nécessaire */}
-            </div>
-          </TransformComponent>
-        </div>
-      )}
-    </TransformWrapper>
-  );
-};
-
-const PuzzlePiece = () => {
-  return (
-    <Draggable>
-      <div className="puzzle-piece w-24 h-24 bg-blue-500 absolute cursor-grab">Piece</div>
-    </Draggable>
+        </Draggable>
+      ))}
+    </div>
   );
 };
 
