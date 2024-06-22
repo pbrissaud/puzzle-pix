@@ -7,6 +7,8 @@ import {ThemeProvider} from "../components/providers/theme";
 import {cn} from "@ui/lib/utils";
 import {siteConfig} from "../config/site";
 import {SiteHeader} from "../components/nav/site-header";
+import {Toaster} from "@ui/components/ui/toaster";
+import {TRPCReactProvider} from "../trpc/react";
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -75,25 +77,28 @@ interface RootLayoutProps {
 
 export default function RootLayout({children}: RootLayoutProps) {
     return (
-        <html lang="en" suppressHydrationWarning>
-        <head/>
-        <CSPostHogProvider>
-            <body className={cn("min-h-screen bg-background font-sans antialiased", inter.className)}>
-            <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-            >
-                <div vaul-drawer-wrapper="">
-                    <div className="relative flex min-h-screen flex-col bg-background">
+      <html lang="en">
+      <body className={cn("min-h-screen bg-background font-sans antialiased", inter.className)}
+            suppressHydrationWarning={true}>
+      <CSPostHogProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+              <div className="relative flex flex-col min-h-screen bg-background">
                         <SiteHeader/>
-                        {children}
-                    </div>
-                </div>
-            </ThemeProvider>
-            </body>
-        </CSPostHogProvider>
+                  <TRPCReactProvider>
+                      <div className="flex-1">
+                          {children}
+                      </div>
+                  </TRPCReactProvider>
+              </div>
+              <Toaster/>
+          </ThemeProvider>
+      </CSPostHogProvider>
+      </body>
         </html>
     );
 }

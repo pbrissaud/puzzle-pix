@@ -2,6 +2,16 @@ import express from 'express';
 import {createServer} from 'node:http';
 import {Server} from 'socket.io';
 import {PlayerRole, PrismaClient} from "@repo/db";
+import {faker} from '@faker-js/faker';
+import * as winston from 'winston';
+
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  transports: [
+    new winston.transports.Console(),
+  ]
+});
 
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
@@ -19,21 +29,22 @@ const io = new Server(server, {
   }
 });
 
-// Function to generate a random name
-const generateRandomName = () => {
-  return "Player_" + Math.floor(Math.random() * 1000);
-};
-
 io.on('connection', (socket) => {
-  socket.on("room-join", async (channel, callback) => {
-    console.log("Client joined room", channel);
+  const socketLogger = logger.child({socketId: socket.id});
+  socket.on("room-join", async (channel) => {
+    socketLogger.info('Client joining room', {
+      roomId: channel
+    });
     socket.join(channel);
 
-    const randomName = generateRandomName();
+    const randomName = faker.internet.userName();
 
     // Add player to MongoDB
-    const player = await db.player.create({
-      data: {
+    await db.player.upsert({
+      where: {
+        socketId: socket.id
+      },
+      create: {
         name: randomName,
         socketId: socket.id,
         room: {
@@ -43,48 +54,84 @@ io.on('connection', (socket) => {
         },
         role: PlayerRole.PLAYER,
       },
-      include: {
-        room: {
-          select: {
-            players: true
-          }
-        }
-      }
+      update: {},
     });
 
-    io.to(channel).emit("room-nb-players", player.room.players.length);
-
-    callback(randomName)
+    io.in(channel).emit("player-update");
   });
 
-  socket.on("disconnecting", async () => {
-    console.log("Client disconnecting");
-    for (const channel of socket.rooms) {
-      if (channel !== socket.id) {
+  socket.on("player-name-change", async (name) => {
+    const player = await db.player.update({
+      where: {
+        socketId: socket.id
+      },
+      data: {
+        name
+      }
+    });
+    socketLogger.info(`Client changing name to ${name}`, {
+      roomId: player.roomId
+    });
+    io.in(player.roomId).emit("player-update");
+  })
 
-        const removedPlayer = await db.player.delete({
-          where: {
-            socketId: socket.id
-          },
-          include: {
-            room: {
-              select: {
-                players: true
+  socket.on("disconnecting", async () => {
+    for (const channel of socket.rooms) {
+      socketLogger.info(`Client disconnecting`, {
+        roomId: channel
+      });
+      if (channel !== socket.id) {
+        try {
+          await db.player.delete({
+            where: {
+              socketId: socket.id
+            },
+            include: {
+              room: {
+                select: {
+                  players: true
+                }
               }
             }
-          }
-        });
+          });
+          io.to(channel).emit("player-update");
+        } catch (e) {
+          logger.error(e);
+        }
 
-        io.to(channel).emit("room-nb-players", removedPlayer.room.players.length);
       }
     }
   });
 
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
+  socket.on("disconnect", async () => {
+    for (const channel of socket.rooms) {
+      socketLogger.info(`Client disconnected`, {
+        roomId: channel
+      });
+      if (channel !== socket.id) {
+        try {
+          await db.player.delete({
+            where: {
+              socketId: socket.id
+            },
+            include: {
+              room: {
+                select: {
+                  players: true
+                }
+              }
+            }
+          });
+          io.to(channel).emit("player-update");
+        } catch (e) {
+          logger.error(e);
+        }
+
+      }
+    }
   });
 });
 
 server.listen(port, () => {
-  console.log(`server running at http://localhost:${port}`);
+  logger.info(`server running at http://localhost:${port}`);
 });
