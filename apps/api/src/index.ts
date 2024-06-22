@@ -75,6 +75,44 @@ io.on('connection', (socket) => {
     io.in(player.roomId).emit("player-update");
   })
 
+  socket.on("piece-move-start", async (pieceId) => {
+    const roomId = socket.rooms.values().next().value;
+    socketLogger.info(`Client moving piece`, {
+      pieceId,
+      roomId
+    });
+    const res = await db.piece.update({
+      where: {
+        id: pieceId
+      },
+      data: {
+        movable: false
+      }
+    });
+    io.to(roomId).emit("piece-update", res);
+  });
+
+  socket.on("piece-move-stop", async (pieceId, {posX, posY}) => {
+    const roomId = socket.rooms.values().next().value;
+    socketLogger.info(`Client stopped moving piece`, {
+      pieceId,
+      roomId,
+      posX,
+      posY
+    });
+    const res = await db.piece.update({
+      where: {
+        id: pieceId
+      },
+      data: {
+        movable: true,
+        posX,
+        posY
+      }
+    });
+    io.to(roomId).emit("piece-update", res);
+  });
+
   socket.on("disconnecting", async () => {
     for (const channel of socket.rooms) {
       socketLogger.info(`Client disconnecting`, {
@@ -98,7 +136,6 @@ io.on('connection', (socket) => {
         } catch (e) {
           logger.error(e);
         }
-
       }
     }
   });

@@ -1,33 +1,43 @@
-import React from 'react';
 import {api} from "../../trpc/react";
-import Draggable from 'react-draggable';
+import {Socket} from "socket.io-client";
+import PuzzlePiece from "./piece";
+import {useEffect, useState} from "react";
+import {Piece} from "@repo/db";
 
-const PuzzleBoard = ({roomId}: { roomId: string }) => {
-  const {data: pieces} = api.room.piece.list.useQuery({roomId}, {
-    staleTime: 1000,
-    refetchInterval: 1000,
-  });
+const PuzzleBoard = ({roomId, socket}: { roomId: string, socket: Socket }) => {
+  const {data: initialPieces} = api.room.piece.list.useQuery({roomId});
+
+  const [pieces, setPieces] = useState(initialPieces || []);
+
+  useEffect(() => {
+    if (initialPieces) {
+      setPieces(initialPieces);
+    }
+  }, [initialPieces]);
+
+  useEffect(() => {
+    const handlePieceUpdate = (updatedPiece: Piece) => {
+      console.log("piece-update", updatedPiece);
+      setPieces((prevPieces) => {
+        return prevPieces.map(piece => piece.id === updatedPiece.id ? updatedPiece : piece);
+      });
+    };
+
+    socket.on("piece-update", handlePieceUpdate);
+
+    return () => {
+      socket.off("piece-update", handlePieceUpdate);
+    };
+  }, [socket]);
 
   if (!pieces) {
     return <div>Loading pieces</div>
   }
 
   return (
-    <div className={`relative h-full w-full bg-cover bg-center bg-no-repeat`}>
+    <div className={`relative h-full w-full bg-cover bg-center bg-no-repeat overflow-scroll`}>
       {pieces.map((piece) => (
-        <Draggable key={piece.id} bounds="parent">
-          <div
-            id={piece.order}
-            className="absolute border border-black"
-            style={{
-              left: `${piece.posX}px`,
-              top: `${piece.posY}px`,
-            }}
-          >
-            {/*eslint-disable-next-line @next/next/no-img-element*/}
-            <img src={`data:image/png;base64,${piece.imgBuffer}`} alt={`Puzzle Piece ${piece.id}`} draggable={false}/>
-          </div>
-        </Draggable>
+        <PuzzlePiece piece={piece} key={piece.id} socket={socket}/>
       ))}
     </div>
   );

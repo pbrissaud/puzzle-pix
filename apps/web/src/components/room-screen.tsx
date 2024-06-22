@@ -61,9 +61,13 @@ const RoomScreen = ({room}: { room: Room }) => {
         })
     }
 
+    if (!socket) {
+        return <div>Connecting...</div>
+    }
+
     return (
       <div className="grid grid-cols-6 h-[calc(100vh-60px)]">
-          <div className="flex flex-col justify-between border-r-2">
+          <div className="flex flex-col justify-between border-r-2 min-w-fit">
               <div className="flex-col space-y-4">
                   <div className="p-4 border-b-2 justify-center">
                       <h1 className="text-xl font-medium text-center">{room.name}</h1>
@@ -75,7 +79,7 @@ const RoomScreen = ({room}: { room: Room }) => {
                       </div>
                   </div>
                   <div className="text-md px-3">
-                      {socket && players ? (
+                      {players ? (
                         <Leaderboard players={players.players || []} socket={socket}/>
                       ) : (
                         <Skeleton count={3}/>
@@ -90,7 +94,7 @@ const RoomScreen = ({room}: { room: Room }) => {
           </div>
 
           <div className="col-span-5 h-full p-0.5">
-              <PuzzleBoard roomId={room.id}/>
+              <PuzzleBoard roomId={room.id} socket={socket}/>
           </div>
       </div>
     );
