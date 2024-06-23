@@ -270,7 +270,8 @@ function FileCard({file, progress, onRemove}: FileCardProps) {
                             {formatBytes(file.size)}
                         </p>
                     </div>
-                    {progress ? <Progress value={progress}/> : null}
+                    {progress ? <Progress value={progress}/> :
+                      <span className="text-muted-foreground">Uploading will start soon</span>}
                 </div>
             </div>
             <div className="flex items-center gap-2">
