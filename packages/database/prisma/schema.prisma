@@ -19,6 +19,7 @@ model User {
   name          String
   signupDate    DateTime @default(now())
   lastLoginDate DateTime @default(now())
+  rooms         Room[]
 }
 
 enum PlayerRole {
@@ -40,7 +41,8 @@ model Room {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   name         String
   public       Boolean
-  authorId     String
+  authorId     String   @db.ObjectId
+  author       User     @relation(fields: [authorId], references: [id])
   imgUrl       String
   nbPieces     Int
   players      Player[]
