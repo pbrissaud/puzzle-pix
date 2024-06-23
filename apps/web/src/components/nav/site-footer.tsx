@@ -2,7 +2,7 @@ import {siteConfig} from "../../config/site";
 
 export function SiteFooter() {
     return (
-      <footer className="p-8">
+      <footer className="relative p-4 z-10">
           <div className="container items-center flex flex-col justify-end">
                 <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
                     Built by{" "}
