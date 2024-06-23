@@ -1,13 +1,13 @@
 "use client"
 
 import {ColumnDef} from "@tanstack/react-table"
-import {Player, Room} from "@repo/db";
+import {Room} from "@repo/db";
 import {format} from 'date-fns';
 import {Button} from "@ui/components/ui/button";
 import {ArrowUpDown} from "lucide-react";
 
 
-export const columns: ColumnDef<Room & { players: Player[] }>[] = [
+export const columns: ColumnDef<Room & { players: number }>[] = [
     {
         header: "Name",
         accessorKey: "name",
@@ -15,8 +15,8 @@ export const columns: ColumnDef<Room & { players: Player[] }>[] = [
     {
         header: "Players",
         cell: ({row}: { row: any }) => {
-          const data = row.original as Room & { players: Player[] };
-          return <span>{data.players.length}/{data.maxPlayers}</span>;
+            const data = row.original as Room & { players: number };
+            return <span>{data.players}/{data.maxPlayers}</span>;
         }
     },
     {
@@ -25,6 +25,7 @@ export const columns: ColumnDef<Room & { players: Player[] }>[] = [
             return (
                 <Button
                     variant="ghost"
+                    className="px-0 hover:hover:bg-transparent"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Nb pieces
@@ -39,6 +40,7 @@ export const columns: ColumnDef<Room & { players: Player[] }>[] = [
             return (
                 <Button
                     variant="ghost"
+                    className="px-0 hover:hover:bg-transparent"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Created at
