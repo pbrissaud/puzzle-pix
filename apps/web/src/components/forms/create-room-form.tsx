@@ -82,7 +82,7 @@ const CreateRoomForm = () => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="md:grid grid-cols-2 gap-12 space-y-8 md:space-y-0">
-          <div className="space-y-4">
+          <div className="space-y-6">
             <FormField
               control={form.control}
               name="images"
@@ -90,13 +90,13 @@ const CreateRoomForm = () => {
                 <div className="space-y-6">
                   {uploadedFiles.length === 0 ? (
                     <FormItem className="w-full">
-                      <FormLabel>Image</FormLabel>
+                      <FormLabel>Picture</FormLabel>
                       <FormControl>
                         <FileUploader
                           value={field.value}
                           onValueChange={field.onChange}
                           maxFiles={1}
-                          maxSize={10 * 1024 * 1024}
+                          maxSize={4 * 1024 * 1024}
                           progresses={progresses}
                           onUpload={uploadFiles}
                           disabled={isUploading}
@@ -116,7 +116,7 @@ const CreateRoomForm = () => {
               render={({field: {value, onChange}}) => (
                 <FormItem>
                   <FormLabel>Nb pieces - {value}</FormLabel>
-                  <FormControl>
+                  <FormControl className="pt-0.5">
                     <Slider
                       min={100}
                       max={1000}
