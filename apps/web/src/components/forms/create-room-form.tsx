@@ -105,7 +105,10 @@ const CreateRoomForm = () => {
                       <FormMessage/>
                     </FormItem>
                   ) : (
-                    <UploadedFilesCard uploadedFiles={uploadedFiles}/>
+                    <div className="space-y-2">
+                      <FormLabel>Picture</FormLabel>
+                      <UploadedFilesCard uploadedFiles={uploadedFiles}/>
+                    </div>
                   )}
                 </div>
               )}
