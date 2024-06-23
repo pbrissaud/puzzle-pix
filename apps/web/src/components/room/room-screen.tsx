@@ -75,8 +75,8 @@ const RoomScreen = ({room}: { room: Room }) => {
               <div className="flex-col space-y-4">
                   <div className="p-4 border-b-2 justify-center">
                       <h1 className="text-xl font-medium text-center">{room.name}</h1>
-                      <RoomStats playerCount={players?.length || 0} maxPlayers={room.maxPlayers}
-                                 nbPieces={room.nbPieces} creationDate={room.creationDate}/>
+                      <RoomStats playerCount={players?.length || 0} nbPieces={room.nbPieces}
+                                 creationDate={room.creationDate}/>
                       <div className="flex flex-col justify-center space-y-2 mt-4">
                           <ZoomableImage src={room.imgUrl} alt={room.name}>
                               <Button variant="outline">

@@ -4,9 +4,8 @@ import {ClockIcon, PuzzleIcon, UserIcon} from "lucide-react";
 import {differenceInMinutes} from "date-fns";
 import {useEffect, useState} from "react";
 
-const RoomStats = ({playerCount, maxPlayers, nbPieces, creationDate}: {
+const RoomStats = ({playerCount, nbPieces, creationDate}: {
   playerCount: number,
-  maxPlayers: number,
   nbPieces: number,
   creationDate: Date
 }) => {
@@ -30,7 +29,7 @@ const RoomStats = ({playerCount, maxPlayers, nbPieces, creationDate}: {
     <div className="flex justify-center space-x-2 text-muted-foreground">
       <div className={statClassName}>
         <UserIcon className={iconClassName}/>
-        <span>{playerCount}/{maxPlayers}</span>
+        <span>{playerCount}</span>
       </div>
       <div className={statClassName}>
         <PuzzleIcon className={iconClassName}/>
