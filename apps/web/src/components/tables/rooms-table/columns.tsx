@@ -33,11 +33,19 @@ export const columns: ColumnDef<Room & { players: number }>[] = [
     }
   },
   {
-    header: "Players",
-    cell: ({row}: { row: any }) => {
-      const data = row.original as Room & { players: number };
-      return <span>{data.players}/{data.maxPlayers}</span>;
-    }
+    header: ({column}) => {
+      return (
+        <Button
+          variant="ghost"
+          className="px-0 hover:hover:bg-transparent"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Players
+          <ArrowUpDown className="ml-2 h-4 w-4"/>
+        </Button>
+      )
+    },
+    accessorKey: "players",
   },
   {
     accessorKey: "nbPieces",

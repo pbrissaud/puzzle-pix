@@ -35,7 +35,6 @@ const CreateRoomForm = () => {
       name: "",
       public: false,
       images: [],
-      maxPlayers: 10,
       nbPieces: 100,
     }
   })

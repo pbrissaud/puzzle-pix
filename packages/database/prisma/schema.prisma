@@ -46,7 +46,6 @@ model Room {
   imgUrl       String
   nbPieces     Int
   players      Player[]
-  maxPlayers   Int
   creationDate DateTime @default(now())
   pieces       Piece[]
 }
