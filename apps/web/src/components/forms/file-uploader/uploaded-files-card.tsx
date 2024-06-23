@@ -2,7 +2,7 @@ import Image from "next/image"
 
 import {Card, CardContent,} from "@ui/components/ui/card"
 import {ScrollArea, ScrollBar} from "@ui/components/ui/scroll-area"
-import {UploadedFile} from "../types/file-upload";
+import {UploadedFile} from "../../../types/file-upload";
 import {EmptyCard} from "@ui/components/ui/empty-card";
 
 interface UploadedFilesCardProps {

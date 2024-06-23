@@ -4,17 +4,17 @@ import {useEffect} from "react";
 import {Room} from "@repo/db";
 import {Button} from "@ui/components/ui/button";
 import {useRouter} from "next/navigation";
-import {useToast} from "../hooks/use-toast";
-import {LogOutIcon} from "lucide-react";
-import useSocket from "../hooks/use-socket";
-import RoomStats from "./room/room-stats";
-import Leaderboard from "./room/leaderboard";
-import {api} from "../trpc/react";
+import {useToast} from "../../hooks/use-toast";
+import {ImageIcon, LogOutIcon} from "lucide-react";
+import useSocket from "../../hooks/use-socket";
+import RoomStats from "./room-stats";
+import Leaderboard from "./leaderboard";
+import {api} from "../../trpc/react";
 import {useQueryClient} from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
-import PuzzleBoard from "./puzzle/board";
+import PuzzleBoard from "../puzzle/board";
 import 'react-loading-skeleton/dist/skeleton.css'
-import ZoomableImage from "./room/zoomable-image";
+import ZoomableImage from "./zoomable-image";
 
 const RoomScreen = ({room}: { room: Room }) => {
     const socket = useSocket();
@@ -35,6 +35,14 @@ const RoomScreen = ({room}: { room: Room }) => {
                 queryClient
                   .invalidateQueries({queryKey: [["room", "player"], {input: {roomId: room.id}, type: "query"}]})
                   .then();
+            });
+
+            socket.on("room-deleted", () => {
+                toast({
+                    title: "Room deleted",
+                    description: "The room has been deleted",
+                });
+                router.push("/rooms");
             });
 
             return () => {
@@ -74,7 +82,11 @@ const RoomScreen = ({room}: { room: Room }) => {
                       <RoomStats playerCount={players?.length || 0} maxPlayers={room.maxPlayers}
                                  nbPieces={room.nbPieces} creationDate={room.creationDate}/>
                       <div className="flex flex-col justify-center space-y-2 mt-4">
-                          <ZoomableImage src={room.imgUrl} alt={room.name}/>
+                          <ZoomableImage src={room.imgUrl} alt={room.name}>
+                              <Button variant="outline">
+                                  <ImageIcon className="mr-2 h-4 w-4"/>View image
+                              </Button>
+                          </ZoomableImage>
                           <Button variant="link" onClick={handleCopyRoomLink}>Copy link to room</Button>
                       </div>
                   </div>

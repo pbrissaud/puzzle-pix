@@ -2,9 +2,9 @@ import {PageActions, PageHeader, PageHeaderDescription, PageHeaderHeading} from 
 import {Button} from "@ui/components/ui/button";
 import React, {Suspense} from "react";
 import Link from "next/link";
-import {RoomsDataTable} from "./data-table";
-import {columns} from "./columns";
 import {api} from "../../../trpc/server";
+import {RoomsDataTable} from "../../../components/tables/rooms-table/data-table";
+import {columns} from "../../../components/tables/rooms-table/columns";
 
 
 const RoomListPage = async () => {

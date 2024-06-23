@@ -6,10 +6,10 @@ import {Button} from "@ui/components/ui/button"
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@ui/components/ui/form"
 import {Input} from "@ui/components/ui/input";
 import {Checkbox} from "@ui/components/ui/checkbox";
-import {FileUploader} from "../file-uploader";
+import {FileUploader} from "./file-uploader/file-uploader";
 import {useUploadFile} from "../../hooks/use-upload-file";
 import {useEffect, useState} from "react";
-import {UploadedFilesCard} from "../uploaded-files-card";
+import {UploadedFilesCard} from "./file-uploader/uploaded-files-card";
 import {Loader2Icon} from "lucide-react";
 import {Slider} from "@ui/components/ui/slider";
 import {api} from "../../trpc/react";
@@ -35,7 +35,7 @@ const CreateRoomForm = () => {
       name: "",
       public: false,
       images: [],
-      maxPlayers: 1,
+      maxPlayers: 10,
       nbPieces: 100,
     }
   })
@@ -113,32 +113,6 @@ const CreateRoomForm = () => {
                 </div>
               )}
             />
-            <FormField
-              control={form.control}
-              name="nbPieces"
-              render={({field: {value, onChange}}) => (
-                <FormItem>
-                  <FormLabel>Nb pieces - {value}</FormLabel>
-                  <FormControl className="pt-0.5">
-                    <Slider
-                      min={100}
-                      max={1000}
-                      step={100}
-                      defaultValue={[value]}
-                      onValueChange={(vals) => {
-                        onChange(vals[0]);
-                      }}
-                      value={[form.getValues("nbPieces")]}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    The number of pieces the image will be cut into. Note that it's just an approximation, the actual
-                    number of pieces might be different.
-                  </FormDescription>
-                  <FormMessage/>
-                </FormItem>
-              )}
-            />
           </div>
           <div className="space-y-8">
             <FormField
@@ -151,7 +125,7 @@ const CreateRoomForm = () => {
                     <Input {...field} />
                   </FormControl>
                   <FormDescription>
-                    This is the name of your game.
+                    This is the name of your room.
                   </FormDescription>
                   <FormMessage/>
                 </FormItem>
@@ -173,9 +147,8 @@ const CreateRoomForm = () => {
                       Public room
                     </FormLabel>
                     <FormDescription>
-                      Public rooms will be listed in the public rooms list. Both private and public rooms can be joined
-                      by
-                      anyone with the link
+                      Public rooms will be listed in the public rooms list. Whatever you choose, anyone with the link
+                      can join the room.
                     </FormDescription>
                   </div>
                 </FormItem>
@@ -183,16 +156,25 @@ const CreateRoomForm = () => {
             />
             <FormField
               control={form.control}
-              name="maxPlayers"
-              render={({field}) => (
+              name="nbPieces"
+              render={({field: {value, onChange}}) => (
                 <FormItem>
-                  <FormLabel>Max Players</FormLabel>
-                  <FormControl>
-                    <Input {...field} type="number" min="1" max="10"
-                           onChange={event => field.onChange(+event.target.value)}/>
+                  <FormLabel>Nb pieces - {value}</FormLabel>
+                  <FormControl className="pt-0.5">
+                    <Slider
+                      min={100}
+                      max={1000}
+                      step={100}
+                      defaultValue={[value]}
+                      onValueChange={(vals) => {
+                        onChange(vals[0]);
+                      }}
+                      value={[form.getValues("nbPieces")]}
+                    />
                   </FormControl>
                   <FormDescription>
-                    The maximum number of players that can join this game.
+                    The number of pieces the image will be cut into. Note that it's just an approximation, the actual
+                    number of pieces might be different.
                   </FormDescription>
                   <FormMessage/>
                 </FormItem>

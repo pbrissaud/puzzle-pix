@@ -167,6 +167,13 @@ io.on('connection', (socket) => {
       }
     }
   });
+
+  socket.on("room-deleted", async (roomId) => {
+    socketLogger.info(`Room deleted`, {
+      roomId
+    });
+    io.to(roomId).emit("room-deleted");
+  })
 });
 
 server.listen(port, () => {
