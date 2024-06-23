@@ -10,15 +10,23 @@ import {analytics} from "../../analytics";
 import {revalidatePath} from "next/cache";
 
 export const roomRouter = createTRPCRouter({
-  listPublic: publicProcedure.query(({ctx}) => {
-    return ctx.db.room.findMany({
+  listPublic: publicProcedure.query(async ({ctx}) => {
+    const res = await ctx.db.room.findMany({
       where: {
         public: true
+      },
+      orderBy: {
+        creationDate: "desc"
       },
       include: {
         players: true
       }
     })
+
+    return res.map(room => ({
+      ...room,
+      players: room.players.length
+    }))
   }),
   listMine: authedProcedure.query(({ctx}) => {
     return ctx.db.room.findMany({
