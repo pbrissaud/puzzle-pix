@@ -31,7 +31,9 @@ export const roomRouter = createTRPCRouter({
   listMine: authedProcedure.query(({ctx}) => {
     return ctx.db.room.findMany({
       where: {
-        authorId: ctx.user.id
+        author: {
+          authId: ctx.user.id
+        }
       },
       include: {
         players: true
@@ -61,7 +63,11 @@ export const roomRouter = createTRPCRouter({
     const room = await db.room.create({
       data: {
         ...input,
-        authorId: ctx.user.id,
+        author: {
+          connect: {
+            authId: ctx.user.id
+          }
+        },
         nbPieces: actualPieces,
         pieces: {
           create: piecesData
