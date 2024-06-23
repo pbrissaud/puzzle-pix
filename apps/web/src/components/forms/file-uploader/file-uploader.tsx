@@ -4,8 +4,8 @@ import * as React from "react"
 import Image from "next/image"
 import {Cross2Icon, UploadIcon} from "@radix-ui/react-icons"
 import Dropzone, {type DropzoneProps,} from "react-dropzone"
-import {useControllableState} from "../hooks/use-controllable-state";
-import {formatBytes} from "../utils";
+import {useControllableState} from "../../../hooks/use-controllable-state";
+import {formatBytes} from "../../../utils";
 import {ScrollArea} from "@ui/components/ui/scroll-area";
 import {Button} from "@ui/components/ui/button";
 import {Progress} from "@ui/components/ui/progress";

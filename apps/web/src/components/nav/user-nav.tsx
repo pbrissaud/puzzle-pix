@@ -1,14 +1,16 @@
 import {
     DropdownMenu,
-    DropdownMenuContent, DropdownMenuItem,
-    DropdownMenuLabel, DropdownMenuSeparator,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@ui/components/ui/dropdown-menu";
 import {Button} from "@ui/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@ui/components/ui/avatar";
 import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import {extractCapitals} from "../../utils";
-import {LogOutIcon, UserIcon} from "lucide-react";
+import {LogOutIcon, PuzzleIcon, UserIcon} from "lucide-react";
 import Link from "next/link";
 import {LoginLink, LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 
@@ -55,6 +57,12 @@ export async function UserNav() {
             <DropdownMenuItem className="hover:cursor-pointer">
                 <UserIcon className="w-4 h-4 mr-2"/>
                 Profile
+            </DropdownMenuItem>
+            </Link>
+          <Link href="/profile/my-rooms" passHref>
+            <DropdownMenuItem className="hover:cursor-pointer">
+              <PuzzleIcon className="w-4 h-4 mr-2"/>
+              My Rooms
             </DropdownMenuItem>
             </Link>
             <DropdownMenuSeparator/>

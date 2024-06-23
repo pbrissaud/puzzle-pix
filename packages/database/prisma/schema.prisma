@@ -32,7 +32,7 @@ model Player {
   socketId String     @unique
   name     String
   roomId   String     @db.ObjectId
-  room     Room       @relation(fields: [roomId], references: [id])
+  room     Room       @relation(fields: [roomId], references: [id], onDelete: Cascade)
   role     PlayerRole
   score    Int        @default(0)
 }
@@ -42,7 +42,7 @@ model Room {
   name         String
   public       Boolean
   authorId     String   @db.ObjectId
-  author       User     @relation(fields: [authorId], references: [id])
+  author       User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   imgUrl       String
   nbPieces     Int
   players      Player[]
@@ -54,7 +54,7 @@ model Room {
 model Piece {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
   roomId    String  @db.ObjectId
-  room      Room    @relation(fields: [roomId], references: [id])
+  room      Room    @relation(fields: [roomId], references: [id], onDelete: Cascade)
   imgBuffer String
   order     String
   posX      Int

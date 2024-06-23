@@ -8,6 +8,7 @@ import {calculatePieceSize, cutImageIntoPieces, fetchImage} from "../../utils";
 import db from "../../mongo";
 import {analytics} from "../../analytics";
 import {revalidatePath} from "next/cache";
+import {TRPCError} from "@trpc/server";
 
 export const roomRouter = createTRPCRouter({
   listPublic: publicProcedure.query(async ({ctx}) => {
@@ -28,8 +29,8 @@ export const roomRouter = createTRPCRouter({
       players: room.players.length
     }))
   }),
-  listMine: authedProcedure.query(({ctx}) => {
-    return ctx.db.room.findMany({
+  listMine: authedProcedure.query(async ({ctx}) => {
+    const res = await ctx.db.room.findMany({
       where: {
         author: {
           authId: ctx.user.id
@@ -39,6 +40,10 @@ export const roomRouter = createTRPCRouter({
         players: true
       }
     })
+    return res.map(room => ({
+      ...room,
+      players: room.players.length
+    }))
   }),
   get: publicProcedure.input(byRoomId).query(({ctx, input}) => {
     return ctx.db.room.findUniqueOrThrow({
@@ -83,6 +88,43 @@ export const roomRouter = createTRPCRouter({
     revalidatePath("/rooms")
     return {
       roomId: room.id
+    }
+  }),
+  delete: authedProcedure.input(byRoomId).mutation(async ({ctx, input}) => {
+    // verify that the user is the author of the room
+    const room = await ctx.db.room.findUniqueOrThrow({
+      where: {
+        id: input.roomId
+      },
+      include: {
+        author: true
+      }
+    })
+
+    if (room.author.authId !== ctx.user.id) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "You're allowed to perform this action"
+      })
+    }
+
+    await ctx.db.room.delete({
+      where: {
+        id: input.roomId
+      },
+    })
+
+    revalidatePath("/rooms")
+    revalidatePath("/profile/my-rooms")
+
+    analytics.capture({
+      event: "room_deleted",
+      distinctId: ctx.user.id,
+      properties: {roomId: input.roomId}
+    })
+
+    return {
+      success: true
     }
   }),
   player: playerRouter,

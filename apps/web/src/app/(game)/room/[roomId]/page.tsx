@@ -1,4 +1,4 @@
-import RoomScreen from "../../../../components/room-screen";
+import RoomScreen from "../../../../components/room/room-screen";
 import {Suspense} from "react";
 import {api} from "../../../../trpc/server";
 

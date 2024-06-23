@@ -1,18 +1,16 @@
 "use client"
 
 import {
-    ColumnDef,
-    flexRender,
-    getCoreRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    SortingState,
-    useReactTable,
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
 } from "@tanstack/react-table"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@ui/components/ui/table";
-import {useRouter} from "next/navigation";
 import {useState} from "react";
-import {Room} from "@repo/db";
 import {Button} from "@ui/components/ui/button";
 
 
@@ -38,8 +36,6 @@ export function RoomsDataTable<TData, TValue>({
             sorting,
         },
     })
-
-    const router = useRouter()
 
     return (
       <div>
@@ -69,7 +65,6 @@ export function RoomsDataTable<TData, TValue>({
                           <TableRow
                             key={row.id}
                             className="cursor-pointer"
-                            onClick={() => router.push(`/room/${(row.original as Room)['id']}`)}
                             data-state={row.getIsSelected() && "selected"}
                           >
                               {row.getVisibleCells().map((cell) => (
