@@ -1,6 +1,7 @@
 import {createCallerFactory, createTRPCRouter, publicProcedure} from "./trpc";
 import {roomRouter} from "./routers/room";
 
+
 /**
  * This is the primary router for your server.
  *
@@ -8,6 +9,9 @@ import {roomRouter} from "./routers/room";
  */
 export const appRouter = createTRPCRouter({
   health: publicProcedure.query(() => "ok"),
+  me: publicProcedure.query(async ({ctx}) => {
+    return ctx.user
+  }),
   room: roomRouter
 });
 

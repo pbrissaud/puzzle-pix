@@ -1,8 +1,8 @@
 'use client'
 import posthog from 'posthog-js'
 import { PostHogProvider } from 'posthog-js/react'
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect } from 'react'
+import { api } from '../../trpc/react'
 
 if (typeof window !== 'undefined') {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
@@ -19,17 +19,20 @@ export function CSPostHogProvider({ children }: { children: React.ReactNode }) {
 }
 
 function PostHogAuthWrapper({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, user } = useKindeBrowserClient();
+  
+  const { data: user } = api.me.useQuery(undefined, {
+    staleTime: 1000 * 30,
+  })
 
   useEffect(() => {
     if (user) {
       posthog.identify(user.id, {
         email: user.email,
       });
-    } else if (!isAuthenticated) {
+    } else if (!user) {
       posthog.reset();
     }
-  }, [isAuthenticated, user]);
+  }, [user]);
 
   return children;
 }

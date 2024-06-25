@@ -1,7 +1,6 @@
 "use client"
 import {usePathname} from "next/navigation";
 import Link from "next/link";
-import {LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
 import {LogOutIcon} from "lucide-react";
 import {cn} from "@ui/lib/utils";
 
@@ -32,12 +31,12 @@ const ProfileNav = () => {
           {link.label}
         </Link>
       ))}
-      <LogoutLink>
+      <Link href="/api/auth/logout">
         <div className="flex">
           <LogOutIcon className="w-4 h-4 mr-2"/>
           <span>Sign out</span>
         </div>
-      </LogoutLink>
+      </Link>
     </nav>
   )
 }

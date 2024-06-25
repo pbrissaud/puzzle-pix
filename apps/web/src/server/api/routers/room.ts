@@ -33,7 +33,7 @@ export const roomRouter = createTRPCRouter({
     const res = await ctx.db.room.findMany({
       where: {
         author: {
-          authId: ctx.user.id
+          email: ctx.user!.email
         }
       },
       include: {
@@ -70,7 +70,7 @@ export const roomRouter = createTRPCRouter({
         ...input,
         author: {
           connect: {
-            authId: ctx.user.id
+            email: ctx.user!.email
           }
         },
         nbPieces: actualPieces,
@@ -82,7 +82,7 @@ export const roomRouter = createTRPCRouter({
 
     analytics.capture({
       event: "room_created",
-      distinctId: ctx.user.id,
+      distinctId: ctx.user!.id,
       properties: {public: input.public, roomId: room.id}
     })
     revalidatePath("/rooms")
@@ -101,7 +101,7 @@ export const roomRouter = createTRPCRouter({
       }
     })
 
-    if (room.author.authId !== ctx.user.id) {
+    if (room.authorId !== ctx.user?.id) {
       throw new TRPCError({
         code: "FORBIDDEN",
         message: "You're allowed to perform this action"
