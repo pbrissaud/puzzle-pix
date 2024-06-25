@@ -6,11 +6,12 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import {getKindeServerSession} from "@kinde-oss/kinde-auth-nextjs/server";
 import {initTRPC, TRPCError} from "@trpc/server";
 import superjson from "superjson";
 import {ZodError} from "zod";
 import db from "../mongo";
+import { type User } from "lucia";
+import {validateRequest} from "../auth";
 
 /**
  * 1. CONTEXT
@@ -27,6 +28,7 @@ import db from "../mongo";
 export const createTRPCContext = async (opts: { headers: Headers }) => {
   return {
     db,
+    user: null as User | null,
     ...opts,
   };
 };
@@ -81,19 +83,24 @@ export const createTRPCRouter = t.router;
  * are logged in.
  */
 
-export const publicProcedure = t.procedure
-
-export const authedProcedure = publicProcedure.use(async function isAuthed(opts) {
+export const publicProcedure = t.procedure.use(async function injectUser(opts) {
   const {next} = opts;
-  const {getUser} = getKindeServerSession();
-  const user = await getUser();
-  if (!user) {
-    throw new TRPCError({code: 'UNAUTHORIZED'});
-  }
+  const {user, session} = await validateRequest();
 
   return next({
     ctx: {
       user: user,
+      session: session,
     },
   });
+});
+
+export const authedProcedure = publicProcedure.use(async function isAuthed(opts) {
+  const {next, ctx} = opts;
+
+  if (!ctx.session) {
+    throw new TRPCError({code: 'UNAUTHORIZED'});
+  }
+
+  return next()
 });
