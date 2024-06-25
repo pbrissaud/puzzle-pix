@@ -57,6 +57,11 @@ const CreateRoomForm = () => {
 
   const {mutate, isPending} = api.room.create.useMutation({
     onSuccess: ({roomId}: { roomId: string }) => {
+      toast({
+        title: "Redirecting...",
+        duration: 1000,
+        description: "The room has been created. Redirecting you to the room...",
+      })
       form.reset()
       router.push(`/room/${roomId}`)
     },

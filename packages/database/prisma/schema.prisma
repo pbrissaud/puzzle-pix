@@ -14,12 +14,21 @@ datasource db {
 }
 
 model User {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  authId        String   @unique
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  email         String    @unique
   name          String
-  signupDate    DateTime @default(now())
-  lastLoginDate DateTime @default(now())
+  picture       String
+  signupDate    DateTime  @default(now())
+  lastLoginDate DateTime  @default(now())
   rooms         Room[]
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @map("_id")
+  userId    String   @db.ObjectId
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+  expiresAt DateTime
 }
 
 enum PlayerRole {

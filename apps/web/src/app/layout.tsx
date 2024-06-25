@@ -1,16 +1,15 @@
 import "@repo/ui/globals.css";
-import type {Metadata, Viewport} from "next";
-import {Inter} from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
 import React from "react";
-import {CSPostHogProvider} from "../components/providers/analytics";
-import {ThemeProvider} from "../components/providers/theme";
-import {cn} from "@ui/lib/utils";
-import {siteConfig} from "../config/site";
-import {SiteHeader} from "../components/nav/site-header";
-import {Toaster} from "@ui/components/ui/toaster";
-import {TRPCReactProvider} from "../trpc/react";
+import { CSPostHogProvider } from "../components/providers/analytics";
+import { ThemeProvider } from "../components/providers/theme";
+import { cn } from "@ui/lib/utils";
+import { siteConfig } from "../config/site";
+import { Toaster } from "@ui/components/ui/toaster";
+import { TRPCReactProvider } from "../trpc/react";
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: {
@@ -20,19 +19,17 @@ export const metadata: Metadata = {
     metadataBase: new URL(siteConfig.url),
     description: siteConfig.description,
     keywords: [
-        "Next.js",
-        "React",
-        "Tailwind CSS",
-        "Server Components",
-        "Radix UI",
+        "Puzzle",
+        "Jigsaw",
+        "Game",
     ],
     authors: [
         {
-            name: "shadcn",
-            url: "https://shadcn.com",
+            name: "Paul Brissaud",
+            url: "https://paulbrissaud.fr",
         },
     ],
-    creator: "shadcn",
+    creator: "pbrissaud",
     openGraph: {
         type: "website",
         locale: "en_US",
@@ -66,8 +63,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
     themeColor: [
-        {media: "(prefers-color-scheme: light)", color: "white"},
-        {media: "(prefers-color-scheme: dark)", color: "black"},
+        { media: "(prefers-color-scheme: light)", color: "white" },
+        { media: "(prefers-color-scheme: dark)", color: "black" },
     ],
 }
 
@@ -75,30 +72,27 @@ interface RootLayoutProps {
     children: React.ReactNode
 }
 
-export default function RootLayout({children}: RootLayoutProps) {
+export default function RootLayout({ children }: RootLayoutProps) {
     return (
-      <html lang="en">
-      <body className={cn("min-h-screen bg-background font-sans antialiased", inter.className)}
-            suppressHydrationWarning={true}>
-      <CSPostHogProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-              <div className="relative flex flex-col min-h-screen bg-background">
-                        <SiteHeader/>
-                  <TRPCReactProvider>
-                      <div className="flex-1">
-                          {children}
-                      </div>
-                  </TRPCReactProvider>
-              </div>
-              <Toaster/>
-          </ThemeProvider>
-      </CSPostHogProvider>
-      </body>
+        <html lang="en">
+            <body className={cn("min-h-screen bg-background font-sans antialiased", inter.className)}
+                suppressHydrationWarning={true}>
+                <TRPCReactProvider>
+                    <CSPostHogProvider>
+                        <ThemeProvider
+                            attribute="class"
+                            defaultTheme="system"
+                            enableSystem
+                            disableTransitionOnChange
+                        >
+                            <TRPCReactProvider>
+                                {children}
+                            </TRPCReactProvider>
+                            <Toaster />
+                        </ThemeProvider>
+                    </CSPostHogProvider>
+                </TRPCReactProvider>
+            </body>
         </html>
     );
 }
