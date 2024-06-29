@@ -17,7 +17,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "prettier": "3.3.2",
-    "turbo": "2.0.4"
+    "turbo": "2.0.6"
   },
   "engines": {
     "node": "20.15.0"
