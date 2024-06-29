@@ -1,7 +1,7 @@
 import {MainNav} from "./main-nav";
 import {MobileNav} from "./mobile-nav";
 import {ModeToggle} from "./mode-toggle";
-import {UserNav} from "./user-nav";
+import UserNav from "./user-nav";
 
 export function SiteHeader() {
     return (

@@ -8,6 +8,7 @@ import { cn } from "@ui/lib/utils";
 import { siteConfig } from "../config/site";
 import { Toaster } from "@ui/components/ui/toaster";
 import { TRPCReactProvider } from "../trpc/react";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 const inter = Inter({ subsets: ["latin"] });
 

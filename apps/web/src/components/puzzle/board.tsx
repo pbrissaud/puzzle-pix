@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {Piece} from "@repo/db";
 
 const PuzzleBoard = ({roomId, socket}: { roomId: string, socket: Socket }) => {
-  const {data: initialPieces} = api.room.piece.list.useQuery({roomId});
+  const {data: initialPieces} = api.room.listPieces.useQuery({roomId});
 
   const [pieces, setPieces] = useState(initialPieces || []);
 
@@ -29,6 +29,11 @@ const PuzzleBoard = ({roomId, socket}: { roomId: string, socket: Socket }) => {
       socket.off("piece-update", handlePieceUpdate);
     };
   }, [socket]);
+const PuzzleBoard = ({roomId}: { roomId: string }) => {
+  const {data: pieces} = api.room.listPieces.useQuery({roomId}, {
+    staleTime: 1000,
+    refetchInterval: 1000,
+  });
 
   if (!pieces) {
     return <div>Loading pieces</div>

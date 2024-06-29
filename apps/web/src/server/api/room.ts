@@ -1,14 +1,11 @@
-import {authedProcedure, createTRPCRouter, publicProcedure} from "../trpc";
-import {byRoomId} from "../schemas/common";
-import {playerRouter} from "./player";
-import {pieceRouter} from "./piece";
-import {createRoomSchema} from "../schemas/room";
+import {authedProcedure, createTRPCRouter, publicProcedure} from "./trpc";
+import {byRoomId, createRoomSchema} from "./schemas";
 import sharp from "sharp";
-import {calculatePieceSize, cutImageIntoPieces, fetchImage} from "../../utils";
-import db from "../../mongo";
-import {analytics} from "../../analytics";
+import {calculatePieceSize, cutImageIntoPieces, fetchImage} from "../utils";
+import db from "../mongo";
+import {analytics} from "../analytics";
 import {revalidatePath} from "next/cache";
-import {TRPCError} from "@trpc/server";
+import { TRPCError } from '@trpc/server';
 
 export const roomRouter = createTRPCRouter({
   listPublic: publicProcedure.query(async ({ctx}) => {
@@ -56,14 +53,8 @@ export const roomRouter = createTRPCRouter({
     const imageBuffer = await fetchImage(input.imgUrl);
     const {width, height} = await sharp(imageBuffer).metadata();
 
-    const {
-      pieceWidth,
-      pieceHeight,
-      actualPieces,
-      piecesPerRow,
-      piecesPerColumn
-    } = calculatePieceSize(width!, height!, input.nbPieces);
-    const piecesData = await cutImageIntoPieces(imageBuffer, pieceWidth, pieceHeight, piecesPerRow, piecesPerColumn);
+    const { actualPieces, ...dimensions} = calculatePieceSize(width!, height!, input.nbPieces);
+    const piecesData = await cutImageIntoPieces(imageBuffer, dimensions.pieceWidth, dimensions.pieceHeight, dimensions.piecesPerRow, dimensions.piecesPerColumn);
 
     const room = await db.room.create({
       data: {
@@ -127,6 +118,22 @@ export const roomRouter = createTRPCRouter({
       success: true
     }
   }),
-  player: playerRouter,
-  piece: pieceRouter
+  listPlayers: publicProcedure.input(byRoomId).query(async ({ctx, input}) => {
+    const players = await ctx.db.player.findMany({
+      where: {
+        roomId: input.roomId
+      }
+    })
+    return {
+      players,
+      length: players.length
+    }
+  }),
+  listPieces: publicProcedure.input(byRoomId).query(async ({ctx, input}) => {
+    return ctx.db.piece.findMany({
+      where: {
+        roomId: input.roomId
+      }
+    })
+  })
 })
