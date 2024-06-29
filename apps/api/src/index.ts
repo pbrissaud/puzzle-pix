@@ -63,18 +63,28 @@ io.on('connection', (socket) => {
   });
 
   socket.on("player-name-change", async (name) => {
-    const player = await db.player.update({
-      where: {
-        socketId: socket.id
-      },
-      data: {
-        name
+    try {
+      const player = await db.player.update({
+        where: {
+          socketId: socket.id
+        },
+        data: {
+          name
+        }
+      });
+      socketLogger.info(`Client changing name to ${name}`, {
+        roomId: player.roomId
+      });
+      io.in(player.roomId).emit("player-update");
+    } catch (e: any) {
+      if (e.code === 'P2002') {
+        socketLogger.error("Name already taken");
+        io.in(socket.id).emit("error", "Name already taken");
+      } else {
+        socketLogger.error(e.message);
+        io.in(socket.id).emit("error", e.message);
       }
-    });
-    socketLogger.info(`Client changing name to ${name}`, {
-      roomId: player.roomId
-    });
-    io.in(player.roomId).emit("player-update");
+    }
   })
 
   socket.on("piece-move-start", async (pieceId) => {

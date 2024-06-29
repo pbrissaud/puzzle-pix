@@ -39,6 +39,14 @@ const RoomScreen = ({room}: { room: Room }) => {
                 queryClient.invalidateQueries({queryKey: [["room", "listPlayers"], {input: {roomId: room.id}, type: "query"}]})
             });
 
+            socket.on("error", (message: string) => {
+                toast({
+                    title: "An error occurred",
+                    description: message,
+                    variant: "destructive"
+                });
+            })
+
             socket.on("room-deleted", () => {
                 toast({
                     title: "Room deleted",
