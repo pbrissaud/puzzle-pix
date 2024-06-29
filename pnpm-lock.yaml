@@ -79,7 +79,7 @@ importers:
         specifier: 3.6.0
         version: 3.6.0(react-hook-form@7.52.0(react@18.3.1))
       '@lucia-auth/adapter-prisma':
-        specifier: ^4.0.1
+        specifier: 4.0.1
         version: 4.0.1(@prisma/client@5.15.1(prisma@5.15.1))(lucia@3.2.0)
       '@radix-ui/react-icons':
         specifier: 1.3.0
@@ -118,13 +118,13 @@ importers:
         specifier: 6.7.8
         version: 6.7.8
       arctic:
-        specifier: ^1.9.1
+        specifier: 1.9.1
         version: 1.9.1
       date-fns:
         specifier: 3.6.0
         version: 3.6.0
       lucia:
-        specifier: ^3.2.0
+        specifier: 3.2.0
         version: 3.2.0
       lucide-react:
         specifier: 0.396.0
