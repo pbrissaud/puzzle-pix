@@ -31,13 +31,15 @@ const io = new Server(server, {
 
 io.on('connection', (socket) => {
   const socketLogger = logger.child({socketId: socket.id});
-  socket.on("room-join", async (channel) => {
+  socket.on("room-join", async (channel, playerName?) => {
     socketLogger.info('Client joining room', {
       roomId: channel
     });
     socket.join(channel);
 
-    const randomName = faker.internet.userName();
+    if (!playerName) {
+      playerName = faker.internet.userName();
+    }
 
     // Add player to MongoDB
     await db.player.upsert({
@@ -45,7 +47,7 @@ io.on('connection', (socket) => {
         socketId: socket.id
       },
       create: {
-        name: randomName,
+        name: playerName,
         socketId: socket.id,
         room: {
           connect: {
