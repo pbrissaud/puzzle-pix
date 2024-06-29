@@ -21,19 +21,22 @@ const RoomScreen = ({room}: { room: Room }) => {
     const {toast} = useToast();
     const queryClient = useQueryClient();
 
+    const { data: user } = api.me.useQuery(undefined, {
+        staleTime: 30 * 1000,
+        select: (data) => data?.user,
+    })
+
     const {data: players} = api.room.listPlayers.useQuery({roomId: room.id}, {
-        staleTime: 10 * 1000,
-        refetchInterval: 10 * 1000,
+        staleTime: 5 * 1000,
+        refetchInterval: 5 * 1000,
     });
 
     useEffect(() => {
         if (socket) {
-            socket.emit("room-join", room.id);
+            socket.emit("room-join", room.id, user?.name);
 
             socket.on("player-update", () => {
-                queryClient
-                  .invalidateQueries({queryKey: [["room", "player"], {input: {roomId: room.id}, type: "query"}]})
-                  .then();
+                queryClient.invalidateQueries({queryKey: [["room", "listPlayers"], {input: {roomId: room.id}, type: "query"}]})
             });
 
             socket.on("room-deleted", () => {

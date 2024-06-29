@@ -4,8 +4,7 @@ import Draggable from 'react-draggable';
 
 const PuzzleBoard = ({roomId}: { roomId: string }) => {
   const {data: pieces} = api.room.listPieces.useQuery({roomId}, {
-    staleTime: 1000,
-    refetchInterval: 1000,
+    staleTime: 1000 * 5 ,
   });
 
   if (!pieces) {
