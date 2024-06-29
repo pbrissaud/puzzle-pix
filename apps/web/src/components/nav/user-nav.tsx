@@ -1,3 +1,5 @@
+"use client"
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -9,14 +11,39 @@ import {
 import {Button} from "@ui/components/ui/button";
 import {Avatar, AvatarFallback, AvatarImage} from "@ui/components/ui/avatar";
 import {extractCapitals} from "../../utils";
-import {LogOutIcon, PuzzleIcon, UserIcon} from "lucide-react";
+import {Loader2Icon, LogOutIcon, PuzzleIcon, UserIcon} from "lucide-react";
 import Link from "next/link";
-import {api} from "../../trpc/server";
+import {api} from "../../trpc/react";
+import { useToast } from "../../hooks/use-toast";
+import { useEffect } from "react";
 
 
-export async function UserNav() {
+const UserNav = () => {
+    const { data: user, isLoading, isError, error } = api.me.useQuery(undefined, {
+        staleTime: 1000 * 30,
+        select: (data) => data.user
+    })
 
-    const user = await api.me();
+    const {toast} = useToast()
+
+    useEffect(() => {
+        if (isError) {
+            toast({
+                title: "Error",
+                description: error.message,
+                variant: "destructive"
+            })
+        }
+    }, [isError, error])
+
+
+    if (isLoading) {
+        return (
+            <Button variant="ghost" disabled>
+                <Loader2Icon className="animate-spin"/>
+            </Button>
+        )
+    }
 
     if (!user) {
         return (
@@ -72,3 +99,5 @@ export async function UserNav() {
         </DropdownMenuContent>
     </DropdownMenu>);
 }
+
+export default UserNav;

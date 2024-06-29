@@ -1,6 +1,6 @@
-import {createCallerFactory, createTRPCRouter, publicProcedure} from "./trpc";
-import {roomRouter} from "./routers/room";
-
+import {authedProcedure, createCallerFactory, createTRPCRouter, publicProcedure} from "./trpc";
+import {roomRouter} from "./room";
+import { updateUsernameSchema } from "./schemas";
 
 /**
  * This is the primary router for your server.
@@ -10,7 +10,20 @@ import {roomRouter} from "./routers/room";
 export const appRouter = createTRPCRouter({
   health: publicProcedure.query(() => "ok"),
   me: publicProcedure.query(async ({ctx}) => {
-    return ctx.user
+    return {user : ctx.user }
+  }),
+  updateUserName: authedProcedure.input(updateUsernameSchema).mutation(async ({ctx, input}) => {
+    await ctx.db.user.update({
+      where: {
+        id: ctx.user!.id
+      },
+      data: {
+        name: input.username
+      }
+    })
+    return {
+      success: true
+    }
   }),
   room: roomRouter
 });

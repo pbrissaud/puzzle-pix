@@ -22,6 +22,7 @@ function PostHogAuthWrapper({ children }: { children: React.ReactNode }) {
   
   const { data: user } = api.me.useQuery(undefined, {
     staleTime: 1000 * 30,
+    select: (data) => data.user
   })
 
   useEffect(() => {

@@ -13,7 +13,6 @@ import {api} from "../../trpc/react";
 import {useQueryClient} from "@tanstack/react-query";
 import Skeleton from "react-loading-skeleton";
 import PuzzleBoard from "../puzzle/board";
-import 'react-loading-skeleton/dist/skeleton.css'
 import ZoomableImage from "./zoomable-image";
 
 const RoomScreen = ({room}: { room: Room }) => {
@@ -22,7 +21,7 @@ const RoomScreen = ({room}: { room: Room }) => {
     const {toast} = useToast();
     const queryClient = useQueryClient();
 
-    const {data: players} = api.room.player.list.useQuery({roomId: room.id}, {
+    const {data: players} = api.room.listPlayers.useQuery({roomId: room.id}, {
         staleTime: 10 * 1000,
         refetchInterval: 10 * 1000,
     });

@@ -14,7 +14,7 @@ import {Loader2Icon} from "lucide-react";
 import {Slider} from "@ui/components/ui/slider";
 import {api} from "../../trpc/react";
 import {z} from "zod";
-import {createRoomSchema} from "../../server/api/schemas/room";
+import {createRoomSchema} from "../../server/api/schemas";
 import {useToast} from "../../hooks/use-toast";
 import {useRouter} from "next/navigation";
 

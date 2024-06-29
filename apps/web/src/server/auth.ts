@@ -46,7 +46,7 @@ export const validateRequest = cache(
   }
 );
 
-export const processLogin = async (user: { name: string, email: string, imgUrl: string }, provider: string) => {
+export const processLogin = async (user: { name: string, email: string, imgUrl: string }, provider: string)  => {
   const existingUser = await db.user.findUnique({
     where: {
       email: user.email
@@ -80,7 +80,7 @@ export const processLogin = async (user: { name: string, email: string, imgUrl: 
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/rooms",
+        Location: "/",
       },
     });
   }

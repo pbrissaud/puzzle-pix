@@ -1,5 +1,9 @@
 import {z} from "zod";
 
+export const byRoomId = z.object({
+  roomId: z.string()
+})
+
 export const createRoomSchema = z.object({
   name: z.string().min(5, 'Room name must be at least 5 characters long'),
   public: z.boolean(),
@@ -7,4 +11,10 @@ export const createRoomSchema = z.object({
   imgUrl: z.string().url(),
 })
 
+export const updateUsernameSchema = z.object({
+  username: z.string().min(5, 'Username name must be at least 5 characters long'),
+})
+
 export type CreateRoom = z.infer<typeof createRoomSchema>
+
+export type UpdateUsername = z.infer<typeof updateUsernameSchema>

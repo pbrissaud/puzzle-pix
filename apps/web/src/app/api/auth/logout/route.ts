@@ -19,5 +19,5 @@ export const GET = async () => {
     sessionCookie.value,
     sessionCookie.attributes
   );
-  return redirect("/login");
+  return redirect("/");
 };

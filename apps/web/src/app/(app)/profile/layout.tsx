@@ -1,7 +1,15 @@
 import {ReactNode} from "react";
 import ProfileNav from "../../../components/nav/profile-nav";
+import { validateRequest } from "../../../server/auth";
+import { redirect } from "next/navigation";
 
-const ProfileLayout = ({children}: { children: ReactNode }) => {
+const ProfileLayout = async ({children}: { children: ReactNode }) => {
+
+  const { user } = await validateRequest();
+
+  if (!user) {
+    redirect('/login');
+  }
 
   return (
     <div className="flex h-full flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">

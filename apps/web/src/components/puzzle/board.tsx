@@ -3,7 +3,7 @@ import {api} from "../../trpc/react";
 import Draggable from 'react-draggable';
 
 const PuzzleBoard = ({roomId}: { roomId: string }) => {
-  const {data: pieces} = api.room.piece.list.useQuery({roomId}, {
+  const {data: pieces} = api.room.listPieces.useQuery({roomId}, {
     staleTime: 1000,
     refetchInterval: 1000,
   });
