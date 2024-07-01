@@ -6,12 +6,12 @@
     "db:push": "prisma db push --skip-generate"
   },
   "devDependencies": {
-    "prisma": "5.15.1",
+    "prisma": "5.16.1",
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*"
   },
   "dependencies": {
-    "@prisma/client": "5.15.1"
+    "@prisma/client": "5.16.1"
   },
   "exports": {
     ".": "./src/index.ts"
